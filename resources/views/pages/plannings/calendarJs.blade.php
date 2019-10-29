@@ -281,6 +281,7 @@ function  initCalendar(){
       $(this).find('.btn-ok').attr('onClick', "supprimerPlanning("+$(e.relatedTarget).data('planning_id')+",'"+$(e.relatedTarget).data('event_id')+"')");
   });
 
+}
   function supprimerPlanning(planning_id,event_id){
     $('#modal-danger').modal('hide')
     //Supprimer un planning
@@ -303,6 +304,5 @@ function  initCalendar(){
         }
     });
   }
-}
 initCalendar()
 </script>

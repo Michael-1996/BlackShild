@@ -67,6 +67,9 @@
                   <div class="box-tools" style="margin-right: 30px">
                     <div class="input-group input-group-sm hidden-xs" style="width: 100px;">
                       <select name="annee" class="form-control">
+                        @for($i=1;$i<=3;$i++)
+                          <option value="20{{Carbon::now()->addYear(3-$i)->format('y')}}">20{{Carbon::now()->addYear(3-$i)->format('y')}}</option>
+                        @endfor
                         <option value="20{{Carbon::now()->format('y')}}" selected>20{{Carbon::now()->format('y')}}</option>
                         @for($i=1;$i<=9;$i++)
                           <option value="20{{Carbon::now()->format('y')-$i}}">20{{Carbon::now()->format('y')-$i}}</option>

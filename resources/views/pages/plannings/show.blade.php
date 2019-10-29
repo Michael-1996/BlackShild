@@ -21,7 +21,6 @@ use Carbon\Carbon;
 
   <!-- Content Wrapper. Contains page content -->
   {{-- <div class="content-wrapper"> --}}
-<div>
     <!-- Main content -->
     <section class="content">
         <div class="row">
@@ -80,31 +79,12 @@ use Carbon\Carbon;
 <!-- Page specific script -->
 
 <!-- Add calendarJsFile -->
-@include('pages.plannings..calendarJs')
+@include('pages.plannings.calendarJs')
 <!-- / Add calendarJsFile -->
 
 
 <script type="text/javascript">
-  //Ajouter un nouveau planning
-  // $(".btn-add-planning-submit").click(function(e){
-  //   e.preventDefault()
-    
-  //   var form=$("#form-create-planning")
-
-  //   $.ajax({
-  //       url     : form.attr('action'),
-  //       type    : form.attr('method'),
-  //       data    : form.serialize(),
-  //       dataType: 'json',
-  //       success: function (data) {
-  //         $('#div_calendar').html(data.calendar_view)
-  //       },
-  //       error:function(){
-  //         alert("Echec")
-  //       }
-  //   });
-  // })
-
+  //Creation de planning
   function creerPlanning(){
     
     var form=$("#form-create-planning")
@@ -116,11 +96,17 @@ use Carbon\Carbon;
         dataType: 'json',
         success: function (data) {
           $('#div_calendar').html(data.calendar_view)
+          //Supression des erreur
+          $('div.form-group').removeClass('has-error');
+          $('label.text-danger').remove();
         },
         error:function(xhr){
           // alert(Object.getOwnPropertyNames(xhr.responseJSON))
           // alert(xhr.responseJSON.date_debut)
          // $('#validation-errors').html('');
+          //Netoyage des ancienes erreurs
+          $('div.form-group').removeClass('has-error');
+          $('label.text-danger').remove();
           $.each(xhr.responseJSON, function(key,value) {
               //Affichage des erreurs
               $('div.form-group.'+key).addClass('has-error');
@@ -155,25 +141,6 @@ use Carbon\Carbon;
     });
   }
 
-  // //Modifier un planning
-  // $(".btn-add-planning-submit").click(function(e){
-  //   e.preventDefault()
-    
-  //   var form=$("#form-create-planning")
-
-  //   $.ajax({
-  //       url     : form.attr('action'),
-  //       type    : form.attr('method'),
-  //       data    : form.serialize(),
-  //       dataType: 'json',
-  //       success: function (data) {
-  //         $('#div_calendar').html(data.calendar_view)
-  //       },
-  //       error:function(){
-  //         alert("Echec")
-  //       }
-  //   });
-  // })
   //Appeler formulaire de modification
   function showEditForm(planning_id){
     // e.preventDefault()

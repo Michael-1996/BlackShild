@@ -33,7 +33,7 @@ use Carbon\Carbon;
               </div>
               <div class="box-body">
                 <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
-                  <div class="form-group">
+                  <div class="form-group @error('site')  has-error @enderror">
                     <label>Site</label>
                     <select name="site" class="form-control select2" style="width: 100%;">
                         <option value="" >Choisir un site</option>

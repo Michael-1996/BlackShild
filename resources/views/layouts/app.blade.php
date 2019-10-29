@@ -361,8 +361,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="{{(Request::is('agents/ajouter')) ? 'active' : null}}"><a href="#" onclick="getPage('{{route('agent.create')}}')"><i class="fa fa-circle-o {{(Request::is('agents/ajouter')) ? 'text-aqua' : null}}"></i>Ajouter un agent</a></li>
-            <li class="{{(Request::is('agents')) ? 'active' : null}}"><a href="#" onclick="getPage('{{route('agent.index')}}')"><i class="fa fa-circle-o {{Request::is('agents') ? 'text-aqua' : null}}"></i> Liste des agents</a></li>
+            <li class="{{(Request::is('agents/ajouter')) ? 'active' : null}}"><a href="{{route('agent.create')}}" {{-- onclick="getPage('{{route('agent.create')}}')" --}}><i class="fa fa-circle-o {{(Request::is('agents/ajouter')) ? 'text-aqua' : null}}"></i>Ajouter un agent</a></li>
+            <li class="{{(Request::is('agents')) ? 'active' : null}}"><a href="{{route('agent.index')}}" {{-- onclick="getPage('{{route('agent.index')}}')" --}}><i class="fa fa-circle-o {{Request::is('agents') ? 'text-aqua' : null}}"></i> Liste des agents</a></li>
           </ul>
         </li>
         <li class="treeview {{Request::is('conges/*') ? 'active' : null}}">
@@ -374,8 +374,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="{{(Request::is('conges')) ? 'active' : null}}"><a href="#" onclick="getPage('{{route('conge.index')}}')"><i class="fa fa-circle-o {{Request::is('conges') ? 'text-aqua' : null}}"></i>Agents en congés</a></li>
-            <li class="{{(Request::is('conges/ajouter')) ? 'active' : null}}"><a href="#" onclick="getPage('{{route('conge.create')}}')"><i class="fa fa-circle-o {{(Request::is('conges/ajouter')) ? 'text-aqua' : null}}"></i>Agents Absents</a></li>
+            <li class="{{(Request::is('conges')) ? 'active' : null}}"><a href="{{route('conge.index')}}" {{-- onclick="getPage('{{route('conge.index')}}')" --}}><i class="fa fa-circle-o {{Request::is('conges') ? 'text-aqua' : null}}"></i>Agents en congés</a></li>
+            <li class="{{(Request::is('conges/ajouter')) ? 'active' : null}}"><a href="{{route('conge.create')}}" {{-- onclick="getPage('{{route('conge.create')}}')" --}}><i class="fa fa-circle-o {{(Request::is('conges/ajouter')) ? 'text-aqua' : null}}"></i>Agents Absents</a></li>
           </ul>
         </li>
         <li class="treeview {{(Request::is('sites') || Request::is('sites/ajouter')) ? 'active' : null}}">
@@ -387,8 +387,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="{{(Request::is('sites/ajouter')) ? 'active' : null}}"><a href="#" onclick="getPage('{{route('site.create')}}')"><i class="fa fa-circle-o {{(Request::is('sites/ajouter')) ? 'text-aqua' : null}}"></i>Ajouter un site</a></li>
-            <li class="{{(Request::is('sites')) ? 'active' : null}}"><a onclick="getPage('{{route('site.index')}}')" href="#"><i class="fa fa-circle-o {{Request::is('sites') ? 'text-aqua' : null}}"></i> Liste des sites</a></li>
+            <li class="{{(Request::is('sites/ajouter')) ? 'active' : null}}"><a href="{{route('site.create')}}" {{-- onclick="getPage('{{route('site.create')}}')" --}}><i class="fa fa-circle-o {{(Request::is('sites/ajouter')) ? 'text-aqua' : null}}"></i>Ajouter un site</a></li>
+            <li class="{{(Request::is('sites')) ? 'active' : null}}"><a {{-- onclick="getPage('{{route('site.index')}}')" --}} href="{{route('site.index')}}"><i class="fa fa-circle-o {{Request::is('sites') ? 'text-aqua' : null}}"></i> Liste des sites</a></li>
           </ul>
         </li>
         <li class="treeview {{Request::is('planning/*') ? 'active' : null}}">
@@ -400,13 +400,13 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="{{(Request::is('planning/provisoires/creer')) ? 'active' : null}}"><a href="#" onclick="getPage('{{route('planning.create')}}')"><i class="fa fa-circle-o {{Request::is('planning/provisoires/creer') ? 'text-aqua' : null}}"></i>Plannifié un Agent</a></li>
+            <li class="{{(Request::is('planning/provisoires/creer')) ? 'active' : null}}"><a href="{{route('planning.create')}}" {{-- onclick="getPage('{{route('planning.create')}}')" --}}><i class="fa fa-circle-o {{Request::is('planning/provisoires/creer') ? 'text-aqua' : null}}"></i>Plannifié un Agent</a></li>
 
-            <li class="{{(Request::is('planning/provisoires')) ? 'active' : null}}"><a href="#" onclick="getPage('{{route('planning.index')}}')"><i class="fa fa-circle-o {{Request::is('planning/provisoires') ? 'text-aqua' : null}}"></i>Planning Provisoires</a></li>
+            <li class="{{(Request::is('planning/provisoires')) ? 'active' : null}}"><a href="{{route('planning.index')}}" {{-- onclick="getPage('{{route('planning.index')}}')" --}}><i class="fa fa-circle-o {{Request::is('planning/provisoires') ? 'text-aqua' : null}}"></i>Planning Provisoires</a></li>
 
-            <li class="{{(Request::is('planning/definitives')) ? 'active' : null}}"><a href="#" onclick="getPage('{{route('planning.index_definitives')}}')"><i class="fa fa-circle-o {{(Request::is('planning/definitives')) ? 'text-aqua' : null}}"></i>Planning Définitives</a></li>
+            <li class="{{(Request::is('planning/definitives')) ? 'active' : null}}"><a href="{{route('planning.index_definitives')}}" {{-- onclick="getPage('{{route('planning.index_definitives')}}')" --}}><i class="fa fa-circle-o {{(Request::is('planning/definitives')) ? 'text-aqua' : null}}"></i>Planning Définitives</a></li>
 
-            <li class="{{(Request::is('planning/archives')) ? 'active' : null}}"><a href="#" onclick="getPage('{{route('planning.index_archive')}}')"><i class="fa fa-circle-o {{(Request::is('planning/archives')) ? 'text-aqua' : null}}"></i>Archives des Planning</a></li>
+            <li class="{{(Request::is('planning/archives')) ? 'active' : null}}"><a href="{{route('planning.index_archive')}}" {{-- onclick="getPage('{{route('planning.index_archive')}}')" --}}><i class="fa fa-circle-o {{(Request::is('planning/archives')) ? 'text-aqua' : null}}"></i>Archives des Planning</a></li>
 
           </ul>
         </li>

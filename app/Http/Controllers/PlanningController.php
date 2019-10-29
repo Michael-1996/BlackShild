@@ -48,6 +48,8 @@ class PlanningController extends Controller
         $word=$request->word;
         $statut=$request->statut;
 
+        dd($mois,Carbon::parse($mois)->format('m'));
+
         // dd($annee,$mois);
         // dd(Carbon::parse($annee)->format('y'),Carbon::parse($mois)->format('m'));
         $plannings =Planning::select(DB::raw('agent_id,sum(heure_total_jour) as heure_total_jour,sum(heure_total_nuit) as heure_total_nuit'))
@@ -331,14 +333,21 @@ class PlanningController extends Controller
         $heure_fin = Carbon::parse($request->heure_fin);
         //Nombre d'heure
         $hours = $heure_fin->diffInHours($heure_debut);
+        //Heure de jour est 15h maximum
+        if($hours>15){
+            $margeHeure=$hours-15;
+            $hours=15;
+        }
+
         if($request->jourferie==='on'){
             $hours = $heure_fin->diffInHours($heure_debut)*2;
         }
         // dd($hours);
         // dd($nbrJours);
         if($heure_debut->toTimeString()>='21:00:00' || ($heure_debut->toTimeString()>='00:00:00' && $heure_debut->toTimeString()<'06:00:00')){
-            return 0;
-            // return ($hours>14 ? abs($hours-14)*$nbrJours : 0);
+            //Nombre total heure de jour
+            $nbreTotalHeure=$nbrJours*$margeHeure;
+            return $nbreTotalHeure;
         }else{
             //Nombre total heure de jour
             $nbreTotalHeure=$nbrJours*$hours;
@@ -358,6 +367,13 @@ class PlanningController extends Controller
         $heure_fin = Carbon::parse($request->heure_fin);
         //Nombre d'heure
         $hours = $heure_fin->diffInHours($heure_debut);
+        //Heure de nuit est 15h maximum
+        $margeHeure=0;
+        if($hours>15){
+            $margeHeure=$hours-15;
+            $hours=15;
+        }
+
         if($request->jourferie==='on'){
             $hours = $heure_fin->diffInHours($heure_debut)*2;
         }
@@ -369,8 +385,9 @@ class PlanningController extends Controller
             //count days
             return $nbreTotalHeure;
         }else{
-            // return ($hours>14 ? abs($hours-14)*$nbrJours : 0);
-            return 0;
+            //Nombre total heure de jour
+            $nbreTotalHeure=$nbrJours*$margeHeure;
+            return $nbreTotalHeure;
         }
     }
 
@@ -381,7 +398,7 @@ class PlanningController extends Controller
         $dateFin=Carbon::parse($request->date_fin);
         //Caluculer le nombre de mois entre ces deux dates
         $nbrMois=$dateDeb->diffInMonths($dateFin)+1;
-
+        // dd($nbrMois);
         //Declaration variable
         $plannings=[];
         //Initialisation de i qui va permetre de avoir si nous somme au debut de l'itération
@@ -407,8 +424,10 @@ class PlanningController extends Controller
             //jour de la date
             if($debut->format('m')==$dateFin->format('m')){
                 $plannings[$i]['date_fin']=$dateFin->toDateString();
+                $request['date_fin']=$dateFin->toDateString();
             }else{
                 $plannings[$i]['date_fin']=$fin->endOfMonth()->toDateString();
+                $request['date_fin']=$fin->endOfMonth()->toDateString();
             }
             $plannings[$i]['heure_debut']=$request->heure_debut;
             $plannings[$i]['heure_fin']=$request->heure_fin;
@@ -417,7 +436,14 @@ class PlanningController extends Controller
             $plannings[$i]['statut']='provisoire';
             $i++;
             //On passe au mois prochain
-            $dateDeb=date('Y-m-d',strtotime('+1 month',strtotime($dateDeb)));
+            if(Carbon::parse($dateDeb)->format('d')==31){
+                $dateDeb=Carbon::parse($dateDeb)->addDay(1)->toDateString();
+            }else{
+                $dateDeb=Carbon::parse($dateDeb)->addMonth(1)->toDateString();
+            }
+            // $dateDeb=Carbon::parse($dateDeb)->addMonth(1)->toDateString();
+            // $dateDeb=date('Y-m-d',strtotime('+1 month',strtotime($dateDeb)));
+            // dd($dateDeb);
         }
 
         return $plannings;

@@ -14,22 +14,22 @@ class SitesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // public function index()
-    // {
-    //     $sites=Site::all();
-    //     return view('pages.sites.index',compact('sites'));
-    // }
-    public function index(Request $request)
+    public function index()
     {
         $sites=Site::all();
-
-
-        if($request->ajax()){
-            return response()->json(['content'=>view('pages.sites.index',compact('sites'))->renderSections()['content']],200);
-        }
-        
         return view('pages.sites.index',compact('sites'));
     }
+    // public function index(Request $request)
+    // {
+    //     $sites=Site::all();
+
+
+    //     if($request->ajax()){
+    //         return response()->json(['content'=>view('pages.sites.index',compact('sites'))->renderSections()['content']],200);
+    //     }
+        
+    //     return view('pages.sites.index',compact('sites'));
+    // }
 
     /**
      * Show the form for creating a new resource.
