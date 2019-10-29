@@ -16,6 +16,7 @@ class CreateCongesTable extends Migration
         Schema::create('conges', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('agent_id');
+            $table->string('typeconge')->nullable();
             $table->date('date_debut');
             $table->date('date_fin');
             $table->text('motif')->nullable();

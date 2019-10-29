@@ -21,6 +21,7 @@
                   <th>Date de fin</th>
                   {{-- <th>Type</th> --}}
                   {{-- <th>Date d'ajout</th> --}}
+                  <th>Type Congé</th>
                   <th>Motif</th>
                   <th>Action</th>
                 </tr>
@@ -31,6 +32,23 @@
                       <td>{{$conge->agent->nom.' '.$conge->agent->prenoms}}</td>
                       <td>{{$conge->date_debut}}</td>
                       <td>{{$conge->date_fin}}</td>
+                      <td>
+                        @if($conge->typeconge=='annuel')
+                          <label class="label label-success">Congé Annuel</label>
+                        @elseif($conge->typeconge=='sanssolde')
+                          <label class="label label-warning">Congé sans solde</label>
+                        @elseif($conge->typeconge=='maladie')
+                          <label class="label label-danger">Congé Maladie</label>
+                        @elseif($conge->typeconge=='formation')
+                          <label class="label label-primary">Congé de Formation</label>
+                        @elseif($conge->typeconge=='maternite')
+                          <label class="label label-info">Congé de Maternité / Paternité</label>
+                        @elseif($conge->typeconge=='familiale')
+                          <label class="label" style="background: #B34EE9">Congé pour des raisons Familiales</label>
+                        @else
+                          <label class="label label-default">Autre</label>
+                        @endif
+                      </td>
                       <td>
                         @if(strlen($conge->motif) > 256)
                           {{substr($conge->motif,0,256).'...'}}

@@ -62,6 +62,13 @@
                     <label>Type de congé</label>
                     <select name="typeconge" class="form-control">
                       <option value="">Choisir le type</option>
+                      <option value="annuel">Congé Annuel</option>
+                      <option value="sanssolde">Congé sans solde</option>
+                      <option value="maladie">Congé Maladie</option>
+                      <option value="formation">Congé de Formation</option>
+                      <option value="maternite">Congé de Maternité / Paternité</option>
+                      <option value="familiale">Congé pour des raisons Familiales</option>
+                      <option value="autre">Autre</option>
                     </select>
                     @error('typeconge')
                         <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>

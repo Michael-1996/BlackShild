@@ -57,6 +57,7 @@ class CongesController extends Controller
 
         Conge::create([
             'agent_id'=>$request->agent,
+            'typeconge'=>$request->typeconge,
             'date_debut'=>$request->date_debut,
             'date_fin'=>$request->date_fin,
             'motif'=>$request->motif,
@@ -116,6 +117,7 @@ class CongesController extends Controller
 
         $conge->update([
             'agent_id'=>$request->agent,
+            'typeconge'=>$request->typeconge,
             'date_debut'=>$request->date_debut,
             'date_fin'=>$request->date_fin,
             'motif'=>$request->motif,
