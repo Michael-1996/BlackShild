@@ -48,7 +48,7 @@ class PlanningController extends Controller
         $word=$request->word;
         $statut=$request->statut;
 
-        dd($mois,Carbon::parse($mois)->format('m'));
+        // dd($mois,Carbon::parse($mois)->format('m'));
 
         // dd($annee,$mois);
         // dd(Carbon::parse($annee)->format('y'),Carbon::parse($mois)->format('m'));

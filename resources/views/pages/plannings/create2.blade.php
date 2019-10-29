@@ -1,4 +1,4 @@
-@extends('layouts.app')
+ @extends('layouts.app')
 @php
 
 use Carbon\Carbon;
@@ -10,16 +10,14 @@ use Carbon\Carbon;
   <link rel="stylesheet" href="{{asset('')}}/bower_components/fullcalendar/dist/fullcalendar.min.css">
   <link rel="stylesheet" href="{{asset('')}}/bower_components/fullcalendar/dist/fullcalendar.print.min.css" media="print">
     <!-- Select2 -->
+  <!-- Time Picker -->
+  <link rel="stylesheet" href="{{asset('')}}/assets/css/timePicker.css">
   {{-- <link rel="stylesheet" href="{{asset('')}}bower_components/select2/dist/css/select2.min.css"> --}}
-
-  <script src="http://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.js"></script>
-  <link href="http://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.css" rel="stylesheet"/>
 @endsection
 
 @section('content')
   <!-- Content Wrapper. Contains page content -->
   {{-- <div class="content-wrapper"> --}}
-
     <!-- Main content -->
     <section class="content">
       <form id="form-create-planning" action="{{route('planning.store')}}" method="post">
@@ -85,14 +83,14 @@ use Carbon\Carbon;
                   <div class="form-row">
                     <div class="form-group heure_debut col-md-6 @error('heure_debut')  has-error @enderror" style="padding-left: 0px">
                       <label for="inputEmail4">De</label>
-                      <input id="heure_debut" name="heure_debut" type="text" class="form-control" placeholder="Heure Début" value="{{old('heure_debut') ?: ''}}">
+                      <input id="heure_debut" name="heure_debut" type="text" class="time-picker form-control" placeholder="Heure Début" value="{{old('heure_debut') ?: ''}}" readonly style="background: white">
                       @error('heure_debut')
                           <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                       @enderror
                     </div>
                     <div class="form-group heure_fin col-md-6 @error('heure_fin')  has-error @enderror" style="padding-right: 0px">
                       <label for="inputPassword4">A</label>
-                      <input id="heure_fin" name="heure_fin" type="text" class="form-control" placeholder="Heure Fin" value="{{old('heure_fin') ?: ''}}">
+                      <input id="heure_fin" name="heure_fin" type="text" class="time-picker form-control" placeholder="Heure Fin" value="{{old('heure_fin') ?: ''}}" readonly style="background: white">
                       @error('heure_fin')
                           <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                       @enderror
@@ -161,8 +159,5 @@ use Carbon\Carbon;
 <!-- Add calendarJsFile -->
 @include('pages.plannings.calendarJs')
 <!-- / Add calendarJsFile -->
-<script type="text/javascript">
-  InitTimePicker()
-</script>
 @endsection
 

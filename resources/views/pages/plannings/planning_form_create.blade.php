@@ -61,14 +61,14 @@
                       <div class="form-row">
                         <div class="form-group heure_debut col-md-6 @error('heure_debut')  has-error @enderror" style="padding-left: 0px">
                           <label for="inputEmail4">De</label>
-                          <input id="heure_debut" name="heure_debut" type="text" class="form-control" placeholder="Heure Début" value="{{old('heure_debut') ?: ''}}">
+                          <input id="heure_debut" name="heure_debut" type="text" class="time-picker form-control" placeholder="Heure Début" value="{{old('heure_debut') ?: ''}}" readonly style="background: white">
                           @error('heure_debut')
                               <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                           @enderror
                         </div>
                         <div class="form-group heure_fin col-md-6 @error('heure_fin')  has-error @enderror" style="padding-right: 0px">
                           <label for="inputPassword4">A</label>
-                          <input id="heure_fin" name="heure_fin" type="text" class="form-control" placeholder="Heure Fin" value="{{old('heure_fin') ?: ''}}">
+                          <input id="heure_fin" name="heure_fin" type="text" class="time-picker form-control" placeholder="Heure Fin" value="{{old('heure_fin') ?: ''}}" readonly style="background: white">
                           @error('heure_fin')
                               <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                           @enderror

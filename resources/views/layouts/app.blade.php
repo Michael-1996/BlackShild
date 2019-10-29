@@ -48,11 +48,11 @@
   <link rel="stylesheet" href="{{asset('')}}/bower_components/fullcalendar/dist/fullcalendar.print.min.css" media="print">
     <!-- Select2 -->
   <link rel="stylesheet" href="{{asset('')}}bower_components/select2/dist/css/select2.min.css">
+ --}}
 
-  <script src="http://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.js"></script>
-  <link href="http://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.css" rel="stylesheet"/> --}}
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
+
 <div class="wrapper">
 
   <header class="main-header">
@@ -348,7 +348,7 @@
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
         <li class="{{Request::is('/') ? 'active' : null}}">
-          <a href="#" onclick="getPage('{{route('home')}}')">
+          <a href="/" onclick="getPage('{{route('home')}}')">
             <i class="fa fa-dashboard"></i> <span>Tableau de bord</span>
           </a>
         </li>
@@ -700,20 +700,13 @@
 <script src="{{asset('')}}dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{asset('')}}dist/js/demo.js"></script>
-<!-- View Javascript -->
+<!-- TimePicker -->
+<link rel="stylesheet" type="text/css" href="{{asset('')}}assets/css/timePicker.css">
+<script type="text/javascript" src="{{asset('')}}assets/js/jquery-timepicker.js"></script>
 <script type="text/javascript">
-  function InitTimePicker(){
-    var MyTimePicker = new TimePicker(['heure_debut', 'heure_fin'], {
-      lang: 'en',
-      theme: 'dark'
-    });
-    MyTimePicker.on('change', function(evt) {
-      
-      var value = (evt.hour || '00') + ':' + (evt.minute || '00');
-      evt.element.value = value;
-
-    });
-  }
+  $().ready(function(e) {
+    $(".time-picker").hunterTimePicker();
+  });
 </script>
 <script type="text/javascript">
   $('#modal-delete-element').on('show.bs.modal', function(e) {

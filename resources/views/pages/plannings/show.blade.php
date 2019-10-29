@@ -9,15 +9,9 @@ use Carbon\Carbon;
   <!-- fullCalendar -->
   <link rel="stylesheet" href="{{asset('')}}/bower_components/fullcalendar/dist/fullcalendar.min.css">
   <link rel="stylesheet" href="{{asset('')}}/bower_components/fullcalendar/dist/fullcalendar.print.min.css" media="print">
-
-
-  <script src="http://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.js"></script>
-<link href="http://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.css" rel="stylesheet"/>
 @endsection
 
 @section('content')
-
-
 
   <!-- Content Wrapper. Contains page content -->
   {{-- <div class="content-wrapper"> --}}
@@ -127,6 +121,7 @@ use Carbon\Carbon;
         dataType: 'json',
         success: function (data) {
           $('#div_calendar').html(data.calendar_view)
+          $('.btn-close-planning-submit').click()
         },
         error:function(xhr){
           // alert(Object.getOwnPropertyNames(xhr.responseJSON))
@@ -154,17 +149,7 @@ use Carbon\Carbon;
         success: function (data) {
           // alert(data.form_edit_view)
           $('#planning-form').html(data.form_edit_view)
-          //Initialiser le TimePicker
-          var MyTimePicker = new TimePicker(['heure_debut_m', 'heure_fin_m'], {
-            lang: 'en',
-            theme: 'dark'
-          });
-          MyTimePicker.on('change', function(evt) {
-            
-            var value = (evt.hour || '00') + ':' + (evt.minute || '00');
-            evt.element.value = value;
-
-          });
+          $(".time-picker").hunterTimePicker();
         },
         error:function(xhr){
           alert("Echec")
@@ -185,25 +170,12 @@ use Carbon\Carbon;
         success: function (data) {
           // alert(data.form_edit_view)
           $('#planning-form').html(data.form_edit_view)
-          //Initialiser le TimePicker
-          var MyTimePicker = new TimePicker(['heure_debut', 'heure_fin'], {
-            lang: 'en',
-            theme: 'dark'
-          });
-          MyTimePicker.on('change', function(evt) {
-            
-            var value = (evt.hour || '00') + ':' + (evt.minute || '00');
-            evt.element.value = value;
-
-          });
+          $(".time-picker").hunterTimePicker();
         },
         error:function(xhr){
           alert("Echec")
         }
     });
   }
-</script>
-<script type="text/javascript">
-  InitTimePicker()
 </script>
 @endsection

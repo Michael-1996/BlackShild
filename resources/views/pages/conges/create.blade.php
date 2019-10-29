@@ -58,6 +58,15 @@
                         <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                     @enderror
                   </div>
+                  <div class="form-group @error('typeconge')  has-error @enderror">
+                    <label>Type de congé</label>
+                    <select name="typeconge" class="form-control">
+                      <option value="">Choisir le type</option>
+                    </select>
+                    @error('typeconge')
+                        <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
+                    @enderror
+                  </div>
                   <div class="form-row">
                     <div class="form-group col-md-6 @error('date_debut')  has-error @enderror" style="padding-left: 0px">
                       <label for="inputEmail4">Du</label>
