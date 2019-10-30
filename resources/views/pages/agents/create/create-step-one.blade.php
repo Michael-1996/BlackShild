@@ -85,7 +85,6 @@
                         </div>
                       </div>
 
-
                       <div style="overflow:auto;margin-right: 26px">
                         <div style="float:right;">
                           <a href="{{route('agent.createStepOne')}}"  class="btn btn-flat btn-primary" id="prevBtn"{{--  onclick="nextPrev(-1)" --}}>Précédent</a>
