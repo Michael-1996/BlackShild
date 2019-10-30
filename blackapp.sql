@@ -16,44 +16,20 @@
 CREATE DATABASE IF NOT EXISTS `blackshi_application` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `blackshi_application`;
 
--- Listage de la structure de la table blackshi_application. agents
-CREATE TABLE IF NOT EXISTS `agents` (
+-- Listage de la structure de la table blackshi_application. conges
+CREATE TABLE IF NOT EXISTS `conges` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `civilite` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `statutmatrimonial` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `nom` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `prenoms` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `datenaissance` date NOT NULL,
-  `matricule` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `codepostal` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `numeromobile` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `commune` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `numerofixe` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `departement` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `nationalite` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `numerocni` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `dateexpircni` date DEFAULT NULL,
-  `numeropermis` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `categoriepermis` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `dateetablpermis` date DEFAULT NULL,
-  `dateexpirpermis` date DEFAULT NULL,
-  `numeross` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `numeroalf` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `numeroetranger` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `lieudelivrancecs` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `etablissementcartedesejour` date DEFAULT NULL,
-  `expirationcartedesejour` date DEFAULT NULL,
-  `typecontrat` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `dureeducontrat` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `qualification` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `numeroads` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `nomchien` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `datevaliditevaccin` date DEFAULT NULL,
+  `agent_id` bigint(20) unsigned NOT NULL,
+  `typeconge` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `date_debut` date NOT NULL,
+  `date_fin` date NOT NULL,
+  `motif` text COLLATE utf8_unicode_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  PRIMARY KEY (`id`),
+  KEY `conges_agent_id_foreign` (`agent_id`),
+  CONSTRAINT `conges_agent_id_foreign` FOREIGN KEY (`agent_id`) REFERENCES `agents` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Les données exportées n'étaient pas sélectionnées.
 -- Listage de la structure de la table blackshi_application. failed_jobs
@@ -74,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Les données exportées n'étaient pas sélectionnées.
 -- Listage de la structure de la table blackshi_application. password_resets
@@ -95,25 +71,6 @@ CREATE TABLE IF NOT EXISTS `pays` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-
--- Les données exportées n'étaient pas sélectionnées.
--- Listage de la structure de la table blackshi_application. sites
-CREATE TABLE IF NOT EXISTS `sites` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `nom` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `adresse` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ville` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `telephone` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `photo` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `nommanager` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `telephonemanager` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `sites_email_unique` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 -- Les données exportées n'étaient pas sélectionnées.
 -- Listage de la structure de la table blackshi_application. users
 CREATE TABLE IF NOT EXISTS `users` (
@@ -130,26 +87,6 @@ CREATE TABLE IF NOT EXISTS `users` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-
--- Les données exportées n'étaient pas sélectionnées.
--- Listage de la structure de la table blackshi_application. plannings
-CREATE TABLE IF NOT EXISTS `plannings` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `site_id` bigint(20) unsigned NOT NULL,
-  `agent_id` bigint(20) unsigned NOT NULL,
-  `date_debut` date NOT NULL,
-  `date_fin` date NOT NULL,
-  `heure_debut` time NOT NULL,
-  `heure_fin` time NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `plannings_agent_id_foreign` (`agent_id`),
-  KEY `plannings_site_id_foreign` (`site_id`),
-  CONSTRAINT `plannings_agent_id_foreign` FOREIGN KEY (`agent_id`) REFERENCES `agents` (`id`),
-  CONSTRAINT `plannings_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Les données exportées n'étaient pas sélectionnées.
