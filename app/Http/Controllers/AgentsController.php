@@ -36,7 +36,237 @@ class AgentsController extends Controller
             return response()->json(['content'=>view('pages.agents.create')->renderSections()['content']],200);
         }
 
-        return view('pages.agents.create');
+        return view('pages.agents.create2');
+    }
+
+    public function createStepOne(Request $request)
+    {
+        $agent = $request->session()->get('agent');
+        return view('pages.agents.create.create-step-one',compact('agent', $agent));
+
+        if($request->ajax()){
+            return response()->json(['content'=>view('pages.agents.create')->renderSections()['content']],200);
+        }
+
+        return view('pages.agents.create.create-step-one');
+    }
+    public function createStepTwo(Request $request)
+    {
+        $agent = $request->session()->get('agent');
+        return view('pages.agents.create.create-step-two',compact('agent', $agent));
+
+        if($request->ajax()){
+            return response()->json(['content'=>view('pages.agents.create')->renderSections()['content']],200);
+        }
+
+        return view('pages.agents.create.create-step-two');
+    }
+    public function createStepThree(Request $request)
+    {
+        $agent = $request->session()->get('agent');
+        return view('pages.agents.create.create-step-three',compact('agent', $agent));
+
+        if($request->ajax()){
+            return response()->json(['content'=>view('pages.agents.create')->renderSections()['content']],200);
+        }
+
+        return view('pages.agents.create.create-step-three');
+    }
+    public function createStepFour(Request $request)
+    {
+        $agent = $request->session()->get('agent');
+        return view('pages.agents.create.create-step-four',compact('agent', $agent));
+
+        if($request->ajax()){
+            return response()->json(['content'=>view('pages.agents.create')->renderSections()['content']],200);
+        }
+
+        return view('pages.agents.create.create-step-four');
+    }
+    public function postStepOne(Request $request)
+    {
+        $validatedData = $request->validate([
+            'civilite'=> [
+                'required',
+                  Rule::in(['M', 'Mll','Mme']),
+            ],
+            'statutmatrimonial'=> [
+                  'required',
+                  Rule::in(['mar', 'cel','veuf']),
+              ],
+            'nom' => 'required|min:2',
+            'datenaissance' => 'required',
+            // 'matricule' => 'required',
+            'prenoms' => 'required',
+        ]);
+        if(empty($request->session()->get('agent'))){
+            $agent = new Agent();
+            $agent->fill($validatedData);
+            $request->session()->put('agent', $agent);
+        }else{
+            $agent = $request->session()->get('agent');
+            $agent->fill($validatedData);
+            $request->session()->put('agent', $agent);
+        }
+
+        return redirect()->route('agent.createStepTwo');
+    }
+    public function postStepTwo(Request $request)
+    {
+        //Validation de données
+        $validatedData=Validator::make($request->all(),[
+
+        ]);
+        //Validation
+        $validatedData->sometimes('numeromobile','required|numeric|min:10', function ($input) use ($request) {
+            return !is_null($request->numeromobile);
+        });
+        $validatedData->sometimes('numerofixe','required|numeric|min:10', function ($input) use ($request) {
+            return !is_null($request->numerofixe);
+        });
+        $validatedData->sometimes('email','required|email', function ($input) use ($request) {
+            return !is_null($request->email);
+        });
+        if($validatedData->fails()){
+          return redirect()
+                ->back()
+                ->withErrors($validatedData)
+                ->withInput();
+        }
+
+        $validatedData=$validatedData->validate();
+
+        if(empty($request->session()->get('agent'))){
+            $agent = new Agent();
+            $agent->fill($validatedData);
+            $request->session()->put('agent', $agent);
+        }else{
+            $agent = $request->session()->get('agent');
+            $agent->fill($validatedData);
+            $request->session()->put('agent', $agent);
+        }
+
+        return redirect()->route('agent.createStepThree');
+    }
+
+    public function postStepThree(Request $request)
+    {
+        //Validation de données
+        $validatedData=Validator::make($request->all(),[
+            'nationalite'=> [
+                  'required',
+                  Rule::in(['FR', 'ET']),
+            ]
+        ]);
+        //Validation
+        $validatedData->sometimes('numerocni','required|min:5', function ($input) use ($request) {
+            return $request->nationalite==='FR';
+        });
+
+        $validatedData->sometimes('dateexpircni','required|date', function ($input) use ($request) {
+            return $request->nationalite==='FR';
+        });
+
+        //Validation si la nationalité est étrangère
+        $validatedData->sometimes('numeroetranger','required|min:5', function ($input) use ($request) {
+            return $request->nationalite==='ET';
+        });
+
+        $validatedData->sometimes('lieudelivrancecs','required|min:5', function ($input) use ($request) {
+            return $request->nationalite==='ET';
+        });
+
+        $validatedData->sometimes('etablissementcartedesejour','required|date', function ($input) use ($request) {
+            return $request->nationalite==='ET';
+        });
+
+        $validatedData->sometimes('expirationcartedesejour','required|date', function ($input) use ($request) {
+            return $request->nationalite==='ET';
+        });
+        //Validation si le permis est saisie
+        $validatedData->sometimes(['dateetablpermis','dateexpirpermis'],'required|date', function ($input) use ($request) {
+            return !is_null($request->numeropermis);
+        });
+        $validatedData->sometimes('categoriepermis',['required',Rule::in(['AM','A','A1','A2','B','B1','BE','C','C1','CE','C1E','D','D1','DE','D1E'])], function ($input) use ($request) {
+            return !is_null($request->numeropermis);
+        });
+
+        if($validatedData->fails()){
+          return redirect()
+                ->back()
+                ->withErrors($validatedData)
+                ->withInput();
+        }
+
+        $validatedData=$validatedData->validate();
+
+        if(empty($request->session()->get('agent'))){
+            $agent = new Agent();
+            $agent->fill($validatedData);
+            $request->session()->put('agent', $agent);
+        }else{
+            $agent = $request->session()->get('agent');
+            $agent->fill($validatedData);
+            $request->session()->put('agent', $agent);
+        }
+
+        return redirect()->route('agent.createStepFour');
+    }
+    public function postStepFour(Request $request)
+    {
+        //Validation de données
+        $validatedData=Validator::make($request->all(),[
+            'typecontrat'=> [
+                  'required',
+                  Rule::in(['cdi', 'cdd','interim','essai']),
+            ]
+        ]);
+
+        //Validation de la durée du contrat si ce n'est pas un cdi
+        $validatedData->sometimes('dureeducontrat',['required',Rule::in(['3mois', '6mois','1ans','2ans'])], function ($input) use ($request) {
+            return $request->typecontrat!='cdi';
+        });
+        //Validation si ADS est coché
+        $validatedData->sometimes('numeroads','required|min:5', function ($input) use ($request) {
+            return $request->ads==='on';
+        });
+        //Validation si maitre chien est coché
+        $validatedData->sometimes('nomchien','required|min:2', function ($input) use ($request) {
+            return $request->maitrechien==='on';
+        });
+        $validatedData->sometimes('datevaliditevaccin','required|date', function ($input) use ($request) {
+            return $request->maitrechien==='on';
+        });
+
+        if($validatedData->fails()){
+          return redirect()
+                ->back()
+                ->withErrors($validatedData)
+                ->withInput();
+        }
+
+        $validatedData=$validatedData->validate();
+
+        if(empty($request->session()->get('agent'))){
+            $agent = new Agent();
+            $agent->fill($validatedData);
+            $request->session()->put('agent', $agent);
+        }else{
+            $agent = $request->session()->get('agent');
+            $agent->fill($validatedData);
+            $request->session()->put('agent', $agent);
+        }
+
+        //Creation de l'agent
+        if($agent->save()){
+          //agent créer avec succes
+          $request->session()->forget('agent');        
+          return redirect()->route('agent.createStepOne');
+        }else{
+          dd($agent);
+        }
+
+        return redirect()->route('agent.createStepOne');
     }
 
     /**
@@ -45,6 +275,59 @@ class AgentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    // public function store(Request $request)
+    // {
+    //   // dd($request->all());
+    //     //Validation de données
+    //     $v=$this->validationsAgent($request);
+
+    //     if($v->fails()){
+    //       return redirect()
+    //             ->back()
+    //             ->withErrors($v)
+    //             ->withInput();
+    //     }
+
+    //     $categoriepermis=BlackshFonctions::arrayToString($request->categoriepermis);
+    //     $qualification=BlackshFonctions::qualificationString($request);
+    //     //Enrégistrements des informations
+    //     Agent::create([
+    //       'civilite'=>$request->civilite,
+    //       'statutmatrimonial'=>$request->statutmatrimonial,
+    //       'nom' => $request->nom,
+    //       'datenaissance' => $request->datenaissance,
+    //       'email' => $request->email,
+    //       'codepostal' => $request->codepostal,
+    //       'matricule' => $request->matricule,
+    //       'prenoms' => $request->prenoms,
+    //       'typecontrat' => $request->typecontrat,
+    //       'dureeducontrat' => $request->dureeducontrat,
+    //       'nationalite'=>$request->nationalite,
+    //       'commune' => $request->commune,
+    //       'departement' => $request->departement,
+    //       'numeromobile' => $request->numeromobile,
+    //       'numerofixe' => $request->numerofixe,
+    //       'numerocni' => $request->numerocni,
+    //       'dateexpircni' => $request->dateexpircni,
+    //       'numeropermis' => $request->numeropermis,
+    //       'categoriepermis' => $categoriepermis,
+    //       'dateetablpermis' => $request->dateetablpermis,
+    //       'dateexpirpermis' => $request->dateexpirpermis,
+    //       'numeross' => $request->numeross,
+    //       'numeroalf' => $request->numeroalf,
+    //       'numeroetranger' => $request->numeroetranger,
+    //       'lieudelivrancecs' => $request->lieudelivrancecs,
+    //       'numeroalf' => $request->numeroalf,
+    //       'etablissementcartedesejour' => $request->etablissementcartedesejour,
+    //       'expirationcartedesejour' => $request->expirationcartedesejour,
+    //       'qualification' => $qualification,
+    //       'numeroads' => $request->numeroads,
+    //       'nomchien' => $request->nomchien,
+    //       'datevaliditevaccin' => $request->datevaliditevaccin,
+    //     ]);
+
+    //     return redirect()->back();
+    // }
     public function store(Request $request)
     {
       // dd($request->all());
@@ -57,66 +340,6 @@ class AgentsController extends Controller
                 ->withErrors($v)
                 ->withInput();
         }
-
-        // $this->validate($request,[
-        //       'civilite'=> [
-        //             'required',
-        //             Rule::in(['M', 'Mll','Mme']),
-        //         ],
-        //       'statutmatrimonial'=> [
-        //             'required',
-        //             Rule::in(['mar', 'cel','veuf']),
-        //         ],
-        //       'nom' => 'required',
-        //       'datenaissance' => 'required',
-        //       'email' => 'required',
-        //       'codepostal' => 'required',
-        //       'matricule' => 'required',
-        //       'prenoms' => 'required',
-        //       'typecontrat'=> [
-        //             'required',
-        //             Rule::in(['cdi', 'cdd','interim','essai']),
-        //         ],
-        //       'dureeducontrat'=> [
-        //             'required',
-        //             Rule::in(['3mois', '6mois','1ans','2ans']),
-        //        ],
-        //       'nationalite'=> [
-        //             'required',
-        //             Rule::in(['FR', 'ET']),
-        //         ],
-        //       'telephone' => 'required',
-        //       'adressecomplementaire' => 'required',
-        //       'ville' => 'required',
-        //       'photo' => 'required',
-        //         'commune' => 'required',
-        //       'departement' => 'required',
-        //       'numeromobile' => 'required',
-        //       'numerofixe' => 'required',
-        //       'adressemail' => 'required',
-        //       'numerocni' => 'required',
-        //       'dateexpircni' => 'required',
-        //       'numeropermis' => 'required',
-        //       'dateetablpermis' => 'required',
-        //       'dateexpirpermis' => 'required',
-        //       'numeross' => 'required',
-        //       'numeroalf' => 'required',
-        //       'numeroetranger' => 'required',
-        //       'lieudelivrancecs' => 'required',
-        //       'numeroallocation' => 'required',
-        //       'categoriepermis'=> [
-        //             'required',
-        //             Rule::in(['AM','A','A1','A2','B','B1','BE','C','C1','CE','C1E','D','D1','DE','D1E']),
-        //         ],
-        //       'etablissementcartedesejour' => 'required',
-        //       'expirationcartedesejour' => 'required',
-        //       'qualification'=> 'required',
-        //       'ads' => 'required',
-        //       'maitrechien' => 'required',
-        //       'numeroads' => 'required',
-        //       'nomchien' => 'required',
-        //       'datevaliditevaccin' => 'required',
-        // ]);
 
         $categoriepermis=BlackshFonctions::arrayToString($request->categoriepermis);
         $qualification=BlackshFonctions::qualificationString($request);

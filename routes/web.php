@@ -30,12 +30,47 @@ Route::get('/agents',[
 	'as'=>'agent.index',
 	'uses'=>'AgentsController@index',
 ]);
-
 Route::get('/agents/ajouter',[
 	'as'=>'agent.create',
 	'uses'=>'AgentsController@create',
 ]);
+//Ajouter Par etape
+Route::get('/agents/ajouter/step1',[
+	'as'=>'agent.createStepOne',
+	'uses'=>'AgentsController@createStepOne',
+]);
+Route::get('/agents/ajouter/step2',[
+	'as'=>'agent.createStepTwo',
+	'uses'=>'AgentsController@createStepTwo',
+]);
+Route::get('/agents/ajouter/step3',[
+	'as'=>'agent.createStepThree',
+	'uses'=>'AgentsController@createStepThree',
+]);
+Route::get('/agents/ajouter/step4',[
+	'as'=>'agent.createStepFour',
+	'uses'=>'AgentsController@createStepFour',
+]);
+// --------Post-------
 
+Route::post('/agents/ajouter/post/step1',[
+	'as'=>'agent.postStepOne',
+	'uses'=>'AgentsController@postStepOne',
+]);
+
+Route::post('/agents/ajouter/step2',[
+	'as'=>'agent.postStepTwo',
+	'uses'=>'AgentsController@postStepTwo',
+]);
+Route::post('/agents/ajouter/step3',[
+	'as'=>'agent.postStepThree',
+	'uses'=>'AgentsController@postStepThree',
+]);
+Route::post('/agents/ajouter/step4',[
+	'as'=>'agent.postStepFour',
+	'uses'=>'AgentsController@postStepFour',
+]);
+// -------------------------------------
 Route::post('/agents/ajouter',[
 	'as'=>'agent.store',
 	'uses'=>'AgentsController@store',
