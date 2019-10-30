@@ -30,59 +30,78 @@ class AgentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
-    {
-        if($request->ajax()){
-            return response()->json(['content'=>view('pages.agents.create')->renderSections()['content']],200);
-        }
+    // public function create(Request $request)
+    // {
+    //     if($request->ajax()){
+    //         return response()->json(['content'=>view('pages.agents.create')->renderSections()['content']],200);
+    //     }
 
-        return view('pages.agents.create2');
-    }
+    //     return view('pages.agents.create2');
+    // }
 
     public function createStepOne(Request $request)
     {
+        //Créer la variable user
+        if(empty($request->session()->get('agent'))){
+            $agent = new Agent();
+            $request->session()->put('agent', $agent);
+        }
+
+        if($request->ajax()){
+            return response()->json(['content'=>view('pages.agents.create.create-step-one')->render()],200);
+        }
+
         $agent = $request->session()->get('agent');
         return view('pages.agents.create.create-step-one',compact('agent', $agent));
-
-        if($request->ajax()){
-            return response()->json(['content'=>view('pages.agents.create')->renderSections()['content']],200);
-        }
-
-        return view('pages.agents.create.create-step-one');
     }
+
     public function createStepTwo(Request $request)
     {
+        //Si la variable session n'existe alors rediriger a la premiere etape
+        if(is_null($request->session()->get('agent'))){
+          return redirect()->route('agent.createStepOne');
+        }
+
+        if($request->ajax()){
+            return response()->json(['content'=>view('pages.agents.create.create-step-two')->render()],200);
+        }
+
         $agent = $request->session()->get('agent');
         return view('pages.agents.create.create-step-two',compact('agent', $agent));
-
-        if($request->ajax()){
-            return response()->json(['content'=>view('pages.agents.create')->renderSections()['content']],200);
-        }
-
-        return view('pages.agents.create.create-step-two');
     }
+
     public function createStepThree(Request $request)
     {
-        $agent = $request->session()->get('agent');
-        return view('pages.agents.create.create-step-three',compact('agent', $agent));
-
-        if($request->ajax()){
-            return response()->json(['content'=>view('pages.agents.create')->renderSections()['content']],200);
+        //Si la variable session n'existe alors rediriger a la premiere etape
+        if(is_null($request->session()->get('agent'))){
+          return redirect()->route('agent.createStepOne');
         }
 
-        return view('pages.agents.create.create-step-three');
+        if($request->ajax()){
+            return response()->json(['content'=>view('pages.agents.create.create-step-three')->render()],200);
+        }
+
+        $agent = $request->session()->get('agent');
+        return view('pages.agents.create.create-step-three',compact('agent', $agent));
     }
+
     public function createStepFour(Request $request)
     {
+        //Si la variable session n'existe alors rediriger a la premiere etape
+        if(is_null($request->session()->get('agent'))){
+          return redirect()->route('agent.createStepOne');
+        }
+
         $agent = $request->session()->get('agent');
         return view('pages.agents.create.create-step-four',compact('agent', $agent));
 
         if($request->ajax()){
-            return response()->json(['content'=>view('pages.agents.create')->renderSections()['content']],200);
+            return response()->json(['content'=>view('pages.agents.create')->render()],200);
         }
 
         return view('pages.agents.create.create-step-four');
     }
+
     public function postStepOne(Request $request)
     {
         $validatedData = $request->validate([
@@ -99,6 +118,9 @@ class AgentsController extends Controller
             // 'matricule' => 'required',
             'prenoms' => 'required',
         ]);
+        //Ajouter les champs non obligatoire
+        $validatedData['matricule']=$request->matricule;
+
         if(empty($request->session()->get('agent'))){
             $agent = new Agent();
             $agent->fill($validatedData);
@@ -108,9 +130,10 @@ class AgentsController extends Controller
             $agent->fill($validatedData);
             $request->session()->put('agent', $agent);
         }
-
+        // dd($agent);
         return redirect()->route('agent.createStepTwo');
     }
+
     public function postStepTwo(Request $request)
     {
         //Validation de données
@@ -136,6 +159,14 @@ class AgentsController extends Controller
 
         $validatedData=$validatedData->validate();
 
+        //Ajouter les champs non obligatoire
+        $validatedData['numeromobile']=$request->numeromobile;
+        $validatedData['email']=$request->email;
+        $validatedData['codepostal']=$request->codepostal;
+        $validatedData['commune']=$request->commune;
+        $validatedData['departement']=$request->departement;
+        $validatedData['numerofixe']=$request->numerofixe;
+
         if(empty($request->session()->get('agent'))){
             $agent = new Agent();
             $agent->fill($validatedData);
@@ -146,6 +177,7 @@ class AgentsController extends Controller
             $request->session()->put('agent', $agent);
         }
 
+        // dd($agent);
         return redirect()->route('agent.createStepThree');
     }
 
@@ -187,9 +219,9 @@ class AgentsController extends Controller
         $validatedData->sometimes(['dateetablpermis','dateexpirpermis'],'required|date', function ($input) use ($request) {
             return !is_null($request->numeropermis);
         });
-        $validatedData->sometimes('categoriepermis',['required',Rule::in(['AM','A','A1','A2','B','B1','BE','C','C1','CE','C1E','D','D1','DE','D1E'])], function ($input) use ($request) {
-            return !is_null($request->numeropermis);
-        });
+        // $validatedData->sometimes('categoriepermis',['required',Rule::in(['AM','A','A1','A2','B','B1','BE','C','C1','CE','C1E','D','D1','DE','D1E'])], function ($input) use ($request) {
+        //     return !is_null($request->numeropermis);
+        // });
 
         if($validatedData->fails()){
           return redirect()
@@ -199,6 +231,33 @@ class AgentsController extends Controller
         }
 
         $validatedData=$validatedData->validate();
+        //Recupération de la catégorie sous forme de chaine
+        $categoriepermis=BlackshFonctions::arrayToString($request->categoriepermis);
+        $validatedData['numeropermis']=$request->numeropermis;
+        $validatedData['dateetablpermis']=$request->dateetablpermis;
+        $validatedData['dateexpirpermis']=$request->dateexpirpermis;
+        $validatedData['categoriepermis']=$categoriepermis;
+
+        $validatedData['numeross']=$request->numeross;
+        $validatedData['numeroalf']=$request->numeroalf;
+
+        if($request->nationalite=='FR'){
+          $validatedData['numerocni']=$request->numerocni;
+          $validatedData['dateexpircni']=$request->dateexpircni;
+
+          $validatedData['numeroetranger']=null;
+          $validatedData['lieudelivrancecs']=null;
+          $validatedData['etablissementcartedesejour']=null;
+          $validatedData['expirationcartedesejour']=null;
+        }else{
+          $validatedData['numerocni']=null;
+          $validatedData['dateexpircni']=null;
+
+          $validatedData['numeroetranger']=$request->numeroetranger;
+          $validatedData['lieudelivrancecs']=$request->lieudelivrancecs;
+          $validatedData['etablissementcartedesejour']=$request->etablissementcartedesejour;
+          $validatedData['expirationcartedesejour']=$request->expirationcartedesejour;
+        }
 
         if(empty($request->session()->get('agent'))){
             $agent = new Agent();
@@ -212,6 +271,7 @@ class AgentsController extends Controller
 
         return redirect()->route('agent.createStepFour');
     }
+
     public function postStepFour(Request $request)
     {
         //Validation de données
@@ -246,6 +306,26 @@ class AgentsController extends Controller
         }
 
         $validatedData=$validatedData->validate();
+        //Ajouter les autres champs
+        if($request->typecontrat=='cdi'){
+          $validatedData['dureeducontrat']=null;
+        }else{
+          $validatedData['dureeducontrat']=$request->dureeducontrat;
+        }
+
+        if($request->ads!='on'){
+          $validatedData['numeroads']=null;
+        }else{
+          $validatedData['numeroads']=$request->numeroads;
+        }
+
+        if($request->maitrechien!='on'){
+          $validatedData['nomchien']=null;
+          $validatedData['datevaliditevaccin']=null;
+        }else{
+          $validatedData['nomchien']=$request->nomchien;
+          $validatedData['datevaliditevaccin']=$request->datevaliditevaccin;
+        }
 
         if(empty($request->session()->get('agent'))){
             $agent = new Agent();
@@ -256,14 +336,14 @@ class AgentsController extends Controller
             $agent->fill($validatedData);
             $request->session()->put('agent', $agent);
         }
-
+        // dd($agent);
         //Creation de l'agent
         if($agent->save()){
           //agent créer avec succes
           $request->session()->forget('agent');        
           return redirect()->route('agent.createStepOne');
         }else{
-          dd($agent);
+          return redirect()->route('agent.createStepOne');
         }
 
         return redirect()->route('agent.createStepOne');
@@ -328,60 +408,6 @@ class AgentsController extends Controller
 
     //     return redirect()->back();
     // }
-    public function store(Request $request)
-    {
-      // dd($request->all());
-        //Validation de données
-        $v=$this->validationsAgent($request);
-
-        if($v->fails()){
-          return redirect()
-                ->back()
-                ->withErrors($v)
-                ->withInput();
-        }
-
-        $categoriepermis=BlackshFonctions::arrayToString($request->categoriepermis);
-        $qualification=BlackshFonctions::qualificationString($request);
-        //Enrégistrements des informations
-        Agent::create([
-          'civilite'=>$request->civilite,
-          'statutmatrimonial'=>$request->statutmatrimonial,
-          'nom' => $request->nom,
-          'datenaissance' => $request->datenaissance,
-          'email' => $request->email,
-          'codepostal' => $request->codepostal,
-          'matricule' => $request->matricule,
-          'prenoms' => $request->prenoms,
-          'typecontrat' => $request->typecontrat,
-          'dureeducontrat' => $request->dureeducontrat,
-          'nationalite'=>$request->nationalite,
-          'commune' => $request->commune,
-          'departement' => $request->departement,
-          'numeromobile' => $request->numeromobile,
-          'numerofixe' => $request->numerofixe,
-          'numerocni' => $request->numerocni,
-          'dateexpircni' => $request->dateexpircni,
-          'numeropermis' => $request->numeropermis,
-          'categoriepermis' => $categoriepermis,
-          'dateetablpermis' => $request->dateetablpermis,
-          'dateexpirpermis' => $request->dateexpirpermis,
-          'numeross' => $request->numeross,
-          'numeroalf' => $request->numeroalf,
-          'numeroetranger' => $request->numeroetranger,
-          'lieudelivrancecs' => $request->lieudelivrancecs,
-          'numeroalf' => $request->numeroalf,
-          'etablissementcartedesejour' => $request->etablissementcartedesejour,
-          'expirationcartedesejour' => $request->expirationcartedesejour,
-          'qualification' => $qualification,
-          'numeroads' => $request->numeroads,
-          'nomchien' => $request->nomchien,
-          'datevaliditevaccin' => $request->datevaliditevaccin,
-        ]);
-
-        return redirect()->back();
-    }
-              
 
     /**
      * Display the specified resource.
@@ -498,118 +524,79 @@ class AgentsController extends Controller
     }
 
     //Fonction validation des données
-    public function validationsAgent(Request $request){
-      //Validation de données
-      $v=Validator::make($request->all(),[
-          'civilite'=> [
-              'required',
-                Rule::in(['M', 'Mll','Mme']),
-          ],
-          'statutmatrimonial'=> [
-                'required',
-                Rule::in(['mar', 'cel','veuf']),
-            ],
-          'nom' => 'required|min:2',
-          'datenaissance' => 'required',
-          'matricule' => 'required',
-          'prenoms' => 'required',
-          'typecontrat'=> [
-                'required',
-                Rule::in(['cdi', 'cdd','interim','essai']),
-          ],
-          'nationalite'=> [
-                'required',
-                Rule::in(['FR', 'ET']),
-          ]
-      ]);
-      //Validation si la nationalité est Française
-      $v->sometimes('numerocni','required|min:5', function ($input) use ($request) {
-          return $request->nationalite==='FR';
-      });
+    // public function validationsAgent(Request $request){
+    //   //Validation de données
+    //   $v=Validator::make($request->all(),[
+    //       'civilite'=> [
+    //           'required',
+    //             Rule::in(['M', 'Mll','Mme']),
+    //       ],
+    //       'statutmatrimonial'=> [
+    //             'required',
+    //             Rule::in(['mar', 'cel','veuf']),
+    //         ],
+    //       'nom' => 'required|min:2',
+    //       'datenaissance' => 'required',
+    //       'matricule' => 'required',
+    //       'prenoms' => 'required',
+    //       'typecontrat'=> [
+    //             'required',
+    //             Rule::in(['cdi', 'cdd','interim','essai']),
+    //       ],
+    //       'nationalite'=> [
+    //             'required',
+    //             Rule::in(['FR', 'ET']),
+    //       ]
+    //   ]);
+    //   //Validation si la nationalité est Française
+    //   $v->sometimes('numerocni','required|min:5', function ($input) use ($request) {
+    //       return $request->nationalite==='FR';
+    //   });
 
-      $v->sometimes('dateexpircni','required|date', function ($input) use ($request) {
-          return $request->nationalite==='FR';
-      });
+    //   $v->sometimes('dateexpircni','required|date', function ($input) use ($request) {
+    //       return $request->nationalite==='FR';
+    //   });
 
-      //Validation si la nationalité est étrangère
-      $v->sometimes('numeroetranger','required|min:5', function ($input) use ($request) {
-          return $request->nationalite==='ET';
-      });
+    //   //Validation si la nationalité est étrangère
+    //   $v->sometimes('numeroetranger','required|min:5', function ($input) use ($request) {
+    //       return $request->nationalite==='ET';
+    //   });
 
-      $v->sometimes('lieudelivrancecs','required|min:5', function ($input) use ($request) {
-          return $request->nationalite==='ET';
-      });
+    //   $v->sometimes('lieudelivrancecs','required|min:5', function ($input) use ($request) {
+    //       return $request->nationalite==='ET';
+    //   });
 
-      $v->sometimes('etablissementcartedesejour','required|date', function ($input) use ($request) {
-          return $request->nationalite==='ET';
-      });
+    //   $v->sometimes('etablissementcartedesejour','required|date', function ($input) use ($request) {
+    //       return $request->nationalite==='ET';
+    //   });
 
-      $v->sometimes('expirationcartedesejour','required|date', function ($input) use ($request) {
-          return $request->nationalite==='ET';
-      });
-      //Validation si le permis est saisie
-      $v->sometimes(['dateetablpermis','dateexpirpermis'],'required|date', function ($input) use ($request) {
-          return !is_null($request->numeropermis);
-      });
-      $v->sometimes('categoriepermis',['required',Rule::in(['AM','A','A1','A2','B','B1','BE','C','C1','CE','C1E','D','D1','DE','D1E'])], function ($input) use ($request) {
-          return !is_null($request->numeropermis);
-      });
-      //Validation de la durée du contrat si ce n'est pas un cdi
-      $v->sometimes('dureeducontrat',['required',Rule::in(['3mois', '6mois','1ans','2ans'])], function ($input) use ($request) {
-          return $request->typecontrat!='cdi';
-      });
-      //Validation si ADS est coché
-      $v->sometimes('numeroads','required|min:5', function ($input) use ($request) {
-          return $request->ads==='on';
-      });
-      //Validation si maitre chien est coché
-      $v->sometimes('nomchien','required|min:2', function ($input) use ($request) {
-          return $request->maitrechien==='on';
-      });
-      $v->sometimes('datevaliditevaccin','required|date', function ($input) use ($request) {
-          return $request->maitrechien==='on';
-      });
-      //Retour des erreurs
-      return $v;
-    }
+    //   $v->sometimes('expirationcartedesejour','required|date', function ($input) use ($request) {
+    //       return $request->nationalite==='ET';
+    //   });
+    //   //Validation si le permis est saisie
+    //   $v->sometimes(['dateetablpermis','dateexpirpermis'],'required|date', function ($input) use ($request) {
+    //       return !is_null($request->numeropermis);
+    //   });
+    //   $v->sometimes('categoriepermis',['required',Rule::in(['AM','A','A1','A2','B','B1','BE','C','C1','CE','C1E','D','D1','DE','D1E'])], function ($input) use ($request) {
+    //       return !is_null($request->numeropermis);
+    //   });
+    //   //Validation de la durée du contrat si ce n'est pas un cdi
+    //   $v->sometimes('dureeducontrat',['required',Rule::in(['3mois', '6mois','1ans','2ans'])], function ($input) use ($request) {
+    //       return $request->typecontrat!='cdi';
+    //   });
+    //   //Validation si ADS est coché
+    //   $v->sometimes('numeroads','required|min:5', function ($input) use ($request) {
+    //       return $request->ads==='on';
+    //   });
+    //   //Validation si maitre chien est coché
+    //   $v->sometimes('nomchien','required|min:2', function ($input) use ($request) {
+    //       return $request->maitrechien==='on';
+    //   });
+    //   $v->sometimes('datevaliditevaccin','required|date', function ($input) use ($request) {
+    //       return $request->maitrechien==='on';
+    //   });
+    //   //Retour des erreurs
+    //   return $v;
+    // }
 }
-        // $plannings =Planning::select(DB::raw('agent_id,sum(heure_total_jour) as heure_total_jour,sum(heure_total_nuit) as heure_total_nuit'))
-        //     ->where('statut','provisoire')
-        //     ->whereYear('date_debut',$annee)
-        //     ->whereMonth('date_debut',Carbon::parse($mois)->format('m'))
-        //     ->where(function($query) use ($word) {
-        //         $query->Where('civilite','LIKE','%'.$word.'%')
-        //         ->orWhere('statutmatrimonial','LIKE','%'.$word.'%')
-        //         ->orWhere('nom','LIKE','%'.$word.'%')
-        //         ->orWhere('datenaissance','LIKE','%'.$word.'%')
-        //         ->orWhere('email','LIKE','%'.$word.'%')
-        //         ->orWhere('codepostal','LIKE','%'.$word.'%')
-        //         ->orWhere('matricule','LIKE','%'.$word.'%')
-        //         ->orWhere('prenoms','LIKE','%'.$word.'%')
-        //         ->orWhere('typecontrat','LIKE','%'.$word.'%')
-        //         ->orWhere('dureeducontrat','LIKE','%'.$word.'%')
-        //         ->orWhere('nationalite','LIKE','%'.$word.'%')
-        //         ->orWhere('commune','LIKE','%'.$word.'%')
-        //         ->orWhere('departement','LIKE','%'.$word.'%')
-        //         ->orWhere('numeromobile','LIKE','%'.$word.'%')
-        //         ->orWhere('numerofixe','LIKE','%'.$word.'%')
-        //         ->orWhere('numerocni','LIKE','%'.$word.'%')
-        //         ->orWhere('dateexpircni','LIKE','%'.$word.'%')
-        //         ->orWhere('numeropermis','LIKE','%'.$word.'%')
-        //         ->orWhere('categoriepermis','LIKE','%'.$word.'%')
-        //         ->orWhere('dateetablpermis','LIKE','%'.$word.'%')
-        //         ->orWhere('dateexpirpermis','LIKE','%'.$word.'%')
-        //         ->orWhere('numeross','LIKE','%'.$word.'%')
-        //         ->orWhere('numeroalf','LIKE','%'.$word.'%')
-        //         ->orWhere('numeroetranger','LIKE','%'.$word.'%')
-        //         ->orWhere('lieudelivrancecs','LIKE','%'.$word.'%')
-        //         ->orWhere('numeroalf','LIKE','%'.$word.'%')
-        //         ->orWhere('etablissementcartedesejour','LIKE','%'.$word.'%')
-        //         ->orWhere('expirationcartedesejour','LIKE','%'.$word.'%')
-        //         ->orWhere('qualification','LIKE','%'.$word.'%')
-        //         ->orWhere('numeroads','LIKE','%'.$word.'%')
-        //         ->orWhere('nomchien','LIKE','%'.$word.'%')
-        //         ->orWhere('datevaliditevaccin','LIKE','%'.$word.'%');
-        //     })
-        //     ->groupBy('agent_id')
-        //     ->get();
+       

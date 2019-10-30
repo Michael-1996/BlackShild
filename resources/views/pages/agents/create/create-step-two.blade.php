@@ -22,21 +22,21 @@
                             <div class="col-md-6">
                               <div class="form-group @error('codepostal')  has-error @enderror">
                                 <label>Code postal</label>
-                                <input name="codepostal" type="text" class="form-control"  placeholder="Entrer le code postal" value="{{old('codepostal') ?: ''}}">
+                                <input name="codepostal" type="text" class="form-control"  placeholder="Entrer le code postal" value="{{old('codepostal') ?: $agent->codepostal}}">
                                 @error('codepostal')
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
                               <div class="form-group @error('commune')  has-error @enderror">
                                 <label>Commune</label>
-                                <input name="commune" type="text" class="form-control"  placeholder="Entrer la commune" value="{{old('commune') ?: ''}}">
+                                <input name="commune" type="text" class="form-control"  placeholder="Entrer la commune" value="{{old('commune') ?: $agent->commune}}">
                                 @error('commune')
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
                               <div class="form-group @error('departement')  has-error @enderror">
                                 <label>Département</label>
-                                <input name="departement" type="text" class="form-control"  placeholder="Entrer le département" value="{{old('departement') ?: ''}}">
+                                <input name="departement" type="text" class="form-control"  placeholder="Entrer le département" value="{{old('departement') ?: $agent->departement}}">
                                 @error('departement')
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
@@ -45,21 +45,21 @@
                             <div class="col-md-6">
                               <div class="form-group @error('numeromobile')  has-error @enderror">
                                 <label>Numéro Mobile</label>
-                                <input name="numeromobile" type="text" class="form-control"  placeholder="Entrer le numéro mobile" value="{{old('numeromobile') ? '' : $agent->numeromobile}}">
+                                <input name="numeromobile" type="text" class="form-control"  placeholder="Entrer le numéro mobile" value="{{old('numeromobile') ?: $agent->numeromobile}}">
                                 @error('numeromobile')
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
                               <div class="form-group @error('numerofixe')  has-error @enderror">
                                 <label>Numéro Fixe</label>
-                                <input name="numerofixe" type="text" class="form-control"  placeholder="Entrer le numéro fixe" value="{{old('numerofixe') ?: ''}}">
+                                <input name="numerofixe" type="text" class="form-control"  placeholder="Entrer le numéro fixe" value="{{old('numerofixe') ?: $agent->numerofixe}}">
                                 @error('numerofixe')
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
                               <div class="form-group @error('email')  has-error @enderror">
                                 <label>Adresse Mail</label>
-                                <input name="email" type="text" class="form-control"  placeholder="Entrer l'adresse mail" value="{{old('email') ?: ''}}">
+                                <input name="email" type="text" class="form-control"  placeholder="Entrer l'adresse mail" value="{{old('email') ?: $agent->email}}">
                                 @error('email')
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror

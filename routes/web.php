@@ -30,10 +30,10 @@ Route::get('/agents',[
 	'as'=>'agent.index',
 	'uses'=>'AgentsController@index',
 ]);
-Route::get('/agents/ajouter',[
-	'as'=>'agent.create',
-	'uses'=>'AgentsController@create',
-]);
+// Route::get('/agents/ajouter',[
+// 	'as'=>'agent.create',
+// 	'uses'=>'AgentsController@create',
+// ]);
 //Ajouter Par etape
 Route::get('/agents/ajouter/step1',[
 	'as'=>'agent.createStepOne',

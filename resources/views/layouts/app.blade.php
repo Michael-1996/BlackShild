@@ -43,10 +43,10 @@
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
-{{--     <!-- fullCalendar -->
+    <!-- fullCalendar -->
   <link rel="stylesheet" href="{{asset('')}}/bower_components/fullcalendar/dist/fullcalendar.min.css">
   <link rel="stylesheet" href="{{asset('')}}/bower_components/fullcalendar/dist/fullcalendar.print.min.css" media="print">
-    <!-- Select2 -->
+{{--     <!-- Select2 -->
   <link rel="stylesheet" href="{{asset('')}}bower_components/select2/dist/css/select2.min.css">
  --}}
 
@@ -361,7 +361,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="{{(Request::is('agents/ajouter')) ? 'active' : null}}"><a href="{{route('agent.create')}}" {{-- onclick="getPage('{{route('agent.create')}}')" --}}><i class="fa fa-circle-o {{(Request::is('agents/ajouter')) ? 'text-aqua' : null}}"></i>Ajouter un agent</a></li>
+            <li class="{{(Request::is('agents/ajouter/*')) ? 'active' : null}}"><a href="{{route('agent.createStepOne')}}" {{-- onclick="getPage('{{route('agent.create')}}')" --}}><i class="fa fa-circle-o {{(Request::is('agents/ajouter/*')) ? 'text-aqua' : null}}"></i>Ajouter un agent</a></li>
             <li class="{{(Request::is('agents')) ? 'active' : null}}"><a href="{{route('agent.index')}}" {{-- onclick="getPage('{{route('agent.index')}}')" --}}><i class="fa fa-circle-o {{Request::is('agents') ? 'text-aqua' : null}}"></i> Liste des agents</a></li>
           </ul>
         </li>
