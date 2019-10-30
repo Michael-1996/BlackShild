@@ -21,7 +21,7 @@
                         <div id="collapseThree" class="panel-collapse">
                           <div class="box-body">
                             <div class="col-md-6">
-                              <div class="form-group @error('typecontrat')  has-error @enderror">
+                              <div class="form-group typecontrat @error('typecontrat')  has-error @enderror">
                                 <label>Type de Contrat</label>
                                 <select class="form-control" name="typecontrat">
                                   <option value="">Choisir le contrat</option>
@@ -87,7 +87,7 @@
                               </div>
                             </div>
                             <div class="col-md-6">
-                              <div class="form-group @error('dureeducontrat')  has-error @enderror" id="div_dureeducontrat" style="display: none;">
+                              <div class="form-group dureeducontrat @error('dureeducontrat')  has-error @enderror" id="div_dureeducontrat" style="display: none;">
                                 <label>Durée du Contrat</label>
                                 <select class="form-control" name="dureeducontrat">
                                   <option value="">Choisir la durée</option>
@@ -100,21 +100,21 @@
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
-                              <div class="form-group @error('numeroads')  has-error @enderror" id="div_numeroads">
+                              <div class="form-group numeroads @error('numeroads')  has-error @enderror" id="div_numeroads">
                                 <label>Numéro ADS</label>
                                 <input name="numeroads" type="text" class="form-control"  placeholder="Entrer le numéro ADS" value="{{old('numeroads') ?: $agent->numeroads}}">
                                 @error('numeroads')
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
-                              <div class="form-group @error('nomchien')  has-error @enderror" id="div_nomchien">
+                              <div class="form-group nomchien @error('nomchien')  has-error @enderror" id="div_nomchien">
                                 <label>Nom du chien</label>
                                 <input name="nomchien" type="text" class="form-control"  placeholder="Entrer le nom du chien" value="{{old('nomchien') ?: $agent->nomchien}}">
                                 @error('nomchien')
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
-                              <div class="form-group @error('datevaliditevaccin')  has-error @enderror" id="div_datevaliditevaccin">
+                              <div class="form-group datevaliditevaccin @error('datevaliditevaccin')  has-error @enderror" id="div_datevaliditevaccin">
                                 <label>Date de validité du vaccin</label>
                                 <div class="input-group date">
                                   <div class="input-group-addon">
@@ -137,8 +137,8 @@
 
                       <div style="overflow:auto;margin-right: 26px">
                         <div style="float:right;">
-                          <a href="{{route('agent.createStepThree')}}"  class="btn btn-flat btn-primary" id="prevBtn"{{--  onclick="nextPrev(-1)" --}}>Précédent</a>
-                          <button type="submit"  class="btn btn-flat btn-primary" id="nextBtn"{{--  onclick="nextPrev(1)" --}}>Submit</button>
+                          <button type="button" class="btn btn-flat btn-primary" id="nextBtn" onclick="getPreviousForm('{{route('agent.createStepThree')}}')">Précédent</button>
+                          <button type="button" class="btn btn-flat btn-primary" id="nextBtn" onclick="submitForm('regForm')">Ajouter</button>
                         </div>
                       </div>
 

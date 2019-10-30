@@ -23,7 +23,7 @@
                               <div class="form-group">
                                 <label>Nationalité</label>
                                 {{$agent->nationalite}}
-                                <select class="form-control" name="nationalite">
+                                <select class="form-control nationalite" name="nationalite">
                                   <option value="FR"  {{old('nationalite')=='FR' || $agent->nationalite=='FR' ? 'selected' : null}}>Française</option>
                                   <option value="ET" {{old('nationalite')=='ET' || $agent->nationalite=='ET' ? 'selected' : null}}>Etrangère</option>
                                 </select>
@@ -31,14 +31,14 @@
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
-                              <div class="form-group @error('numeropermis')  has-error @enderror">
+                              <div class="form-group numeropermis @error('numeropermis')  has-error @enderror">
                                 <label>Numéro de permis de conduire</label>
                                 <input name="numeropermis" type="text" class="form-control"  placeholder="Entrer le numéro de permis de conduire" value="{{old('numeropermis') ?: $agent->numeropermis}}">
                                 @error('numeropermis')
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
-                              <div class="form-group @error('dateetablpermis')  has-error @enderror">
+                              <div class="form-group dateetablpermis @error('dateetablpermis')  has-error @enderror">
                                 <label>Date détablissement du permis</label>
                                 <div class="input-group date">
                                   <div class="input-group-addon">
@@ -51,7 +51,7 @@
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
-                              <div class="form-group @error('dateexpirpermis')  has-error @enderror">
+                              <div class="form-group dateexpirpermis @error('dateexpirpermis')  has-error @enderror">
                                 <label>Date d'expiration du permis</label>
                                 <div class="input-group date">
                                   <div class="input-group-addon">
@@ -64,7 +64,7 @@
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
-                              <div class="form-group @error('categoriepermis')  has-error @enderror">
+                              <div class="form-group categoriepermis @error('categoriepermis')  has-error @enderror">
                                 <label>Catégorie du permis</label>
                                 <select name="categoriepermis[]" class="form-control select2" multiple="multiple" data-placeholder="Select a State" style="width: 100%;">
                                   <option value="AM" {{in_array('AM',old('categoriepermis') ?: array()) ? 'selected' : null}}>Catégorie AM</option>
@@ -89,35 +89,35 @@
                               </div>
                             </div>
                             <div class="col-md-6">
-                              <div class="form-group @error('numerocni')  has-error @enderror" id="div_carteidentite">
+                              <div class="form-group numerocni @error('numerocni')  has-error @enderror" id="div_carteidentite">
                                 <label>Numéro CNI</label>
                                 <input name="numerocni" type="text" class="form-control"  placeholder="Entrer le numéro CNI" value="{{old('numerocni') ?: $agent->numerocni}}">
                                 @error('numerocni')
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
-                              <div class="form-group @error('dateexpircni')  has-error @enderror" id="div_dateexpircni">
+                              <div class="form-group dateexpircni @error('dateexpircni')  has-error @enderror" id="div_dateexpircni">
                                 <label>Date d'expiration CNI</label>
                                 <input name="dateexpircni" type="date" class="form-control" value="{{old('dateexpircni') ?: $agent->dateexpircni}}">
                                 @error('dateexpircni')
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
-                              <div class="form-group @error('numeroetranger')  has-error @enderror" id="div_numeroetranger" style="display: none">
+                              <div class="form-group numeroetranger @error('numeroetranger')  has-error @enderror" id="div_numeroetranger" style="display: none">
                                 <label>Numéro étranger</label>
                                 <input name="numeroetranger" type="text" class="form-control"  placeholder="Entrer le numéro étranger" value="{{old('numeroetranger') ?: $agent->numeroetranger}}">
                                 @error('numeroetranger')
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
-                              <div class="form-group @error('lieudelivrancecs')  has-error @enderror" id="div_lieudelivrancecs" style="display: none">
+                              <div class="form-group lieudelivrancecs @error('lieudelivrancecs')  has-error @enderror" id="div_lieudelivrancecs" style="display: none">
                                 <label>Lieu de délivrance de la carte de séjour</label>
                                 <input name="lieudelivrancecs" type="text" class="form-control"  placeholder="Entrer le lieux de délivrance de la carte" value="{{old('lieudelivrancecs') ?: $agent->lieudelivrancecs}}">
                                 @error('lieudelivrancecs')
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
-                              <div class="form-group @error('etablissementcartedesejour')  has-error @enderror" id="div_etablissementcartedesejour" style="display: none">
+                              <div class="form-group etablissementcartedesejour @error('etablissementcartedesejour')  has-error @enderror" id="div_etablissementcartedesejour" style="display: none">
                                 <label>Date d'etablissement de la carte de séjour</label>
                                 <div class="input-group date">
                                   <div class="input-group-addon">
@@ -130,7 +130,7 @@
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
-                              <div class="form-group @error('expirationcartedesejour')  has-error @enderror" id="div_expirationcartedesejour" style="display: none">
+                              <div class="form-group expirationcartedesejour @error('expirationcartedesejour')  has-error @enderror" id="div_expirationcartedesejour" style="display: none">
                                 <label>Date d'expiration de la carte de séjour</label>
                                 <div class="input-group date">
                                   <div class="input-group-addon">
@@ -143,14 +143,14 @@
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
-                              <div class="form-group @error('numeross')  has-error @enderror" id="div_lieudelivrance">
+                              <div class="form-group numeross @error('numeross')  has-error @enderror" id="div_lieudelivrance">
                                 <label>Numéro de sécurité social</label>
                                 <input name="numeross" type="text" class="form-control"  placeholder="Entrer le numéro de sécurité social" value="{{old('numeross') ?: $agent->numeross}}">
                                 @error('numeross')
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
-                              <div class="form-group @error('numeroalf')  has-error @enderror">
+                              <div class="form-group numeroalf @error('numeroalf')  has-error @enderror">
                                 <label>Numéro d'allocation familiale</label>
                                 <input name="numeroalf" type="text" class="form-control"  placeholder="Entrer le numéro d'allocation familiale" value="{{old('numeroalf') ?: $agent->numeroalf}}">
                                 @error('numeroalf')
@@ -167,8 +167,8 @@
 
                       <div style="overflow:auto;margin-right: 26px">
                         <div style="float:right;">
-                          <a href="{{route('agent.createStepTwo')}}"  class="btn btn-flat btn-primary" id="prevBtn"{{--  onclick="nextPrev(-1)" --}}>Précédent</a>
-                          <button type="submit" class="btn btn-flat btn-primary" id="nextBtn"{{--  onclick="nextPrev(1)" --}}>Suivant</button>
+                          <button type="button" class="btn btn-flat btn-primary" id="nextBtn" onclick="getPreviousForm('{{route('agent.createStepTwo')}}')">Précédent</button>
+                          <button type="button" class="btn btn-flat btn-primary" id="nextBtn" onclick="submitForm('regForm')">Suivant</button>
                         </div>
                       </div>
 

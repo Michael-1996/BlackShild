@@ -766,6 +766,100 @@
 </script>
 
 <script type="text/javascript">
+  function submitForm(form_id){
+    form=$("#"+form_id)
+    // e.preventDefault()
+    $.ajax({
+        url:    form.attr('action'),
+        type    : form.attr('method'),
+        data    : form.serialize(),
+        // dataType: 'json',
+        success: function (data) {
+          // alert(data.content)
+          // $('head').append(data.content.head);
+          // $('body').append(data.content.script);
+          $('#pageContent').html(data.content);
+          // $('.main-sidebar').load();
+          initCalendar()
+          //Suppression des erreurs
+          $('div.form-group').removeClass('has-error');
+          $('label.text-danger').remove();
+        },
+        error:function(xhr){
+          // alert(Object.getOwnPropertyNames(xhr.responseJSON.errors))
+          //Affichage des erreurs
+          $('div.form-group').removeClass('has-error');
+          $('label.text-danger').remove();
+          $.each(xhr.responseJSON, function(key,value) {
+              //Affichage des erreurs
+              $('div.form-group.'+key).addClass('has-error');
+              $('div.form-group.'+key).append('<label class="control-label text-danger" for="inputError"><i class="fa fa-times-circle-o"></i>'+value+'</label>');
+          })
+        }
+    });
+  }
+
+</script>
+<script type="text/javascript">
+  function getPreviousForm(link){
+    $.ajax({
+        url: link,
+        type    : 'GET',
+        // data    : {
+        //   "id":  planning_id,
+        // },
+        // dataType: 'json',
+        success: function (data) {
+          // alert(data.content)
+          // $('head').append(data.content.head);
+          // $('body').append(data.content.script);
+          $('#pageContent').html(data.content);
+          // $('.main-sidebar').load();
+          initCalendar()
+        },
+        error:function(xhr){
+          alert("Echec")
+        }
+    });
+  }
+
+</script>
+{{-- <script type="text/javascript">
+  function submitForm(form_id){
+    // alert('Bonjour'+form_id)
+    alert($("#"+form_id))
+    form=$("#"+form_id)
+    // e.preventDefault()
+    $.ajax({
+        url:    form.attr('action'),
+        type    : form.attr('method'),
+        data    : form.serialize(),
+        // dataType: 'json',
+        success: function (data) {
+          // alert(data.content)
+          $('head').append(data.content.head);
+          $('body').append(data.content.script);
+          $('#pageContent').html(data.content.content);
+          // $('.main-sidebar').load();
+          initCalendar()
+          //suppression des erreurs
+          $('div.form-group').removeClass('has-error');
+          $('label.text-danger').remove();
+        },
+        error:function(xhr){
+          //Affichage des erreurs
+          $('div.form-group').removeClass('has-error');
+          $('label.text-danger').remove();
+          $.each(xhr.responseJSON, function(key,value) {
+              //Affichage des erreurs
+              $('div.form-group.'+key).addClass('has-error');
+              $('div.form-group.'+key).append('<label class="control-label text-danger" for="inputError"><i class="fa fa-times-circle-o"></i>'+value+'</label>');
+        }
+    });
+  }
+
+</script> --}}
+<script type="text/javascript">
   function editElement(link,div_refresh){
     // e.preventDefault()
     //Modifier un élement

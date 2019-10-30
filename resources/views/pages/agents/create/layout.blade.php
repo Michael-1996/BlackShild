@@ -121,6 +121,9 @@ input.invalid {
               <div class="box box-solid">
                 <div class="box-header with-border">
                 </div>
+                  <div id="#pageContent">
+                    
+
 {{--                 <!-- form start -->
                 <form id="regForm" role="form" action="{{route('agent.store')}}" method="post">
                 @csrf
@@ -143,6 +146,7 @@ input.invalid {
                   </div>
                   <!-- /.box-body -->
                 </form> --}}
+                  </div>
               </div>
               <!-- /.box -->
             </div>

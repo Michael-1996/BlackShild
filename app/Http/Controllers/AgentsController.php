@@ -47,11 +47,11 @@ class AgentsController extends Controller
             $request->session()->put('agent', $agent);
         }
 
-        if($request->ajax()){
-            return response()->json(['content'=>view('pages.agents.create.create-step-one')->render()],200);
-        }
-
         $agent = $request->session()->get('agent');
+
+        if($request->ajax()){
+            return response()->json(['content'=>view('pages.agents.create.create-step-one',compact('agent'))->renderSections()['content']],200);
+        }
         return view('pages.agents.create.create-step-one',compact('agent', $agent));
     }
 
@@ -62,11 +62,11 @@ class AgentsController extends Controller
           return redirect()->route('agent.createStepOne');
         }
 
-        if($request->ajax()){
-            return response()->json(['content'=>view('pages.agents.create.create-step-two')->render()],200);
-        }
-
         $agent = $request->session()->get('agent');
+        
+        if($request->ajax()){
+            return response()->json(['content'=>view('pages.agents.create.create-step-two',compact('agent'))->renderSections()['content']],200);
+        }
         return view('pages.agents.create.create-step-two',compact('agent', $agent));
     }
 
@@ -77,11 +77,11 @@ class AgentsController extends Controller
           return redirect()->route('agent.createStepOne');
         }
 
-        if($request->ajax()){
-            return response()->json(['content'=>view('pages.agents.create.create-step-three')->render()],200);
-        }
-
         $agent = $request->session()->get('agent');
+        
+        if($request->ajax()){
+            return response()->json(['content'=>view('pages.agents.create.create-step-three',compact('agent'))->renderSections()['content']],200);
+        }
         return view('pages.agents.create.create-step-three',compact('agent', $agent));
     }
 
@@ -93,18 +93,16 @@ class AgentsController extends Controller
         }
 
         $agent = $request->session()->get('agent');
-        return view('pages.agents.create.create-step-four',compact('agent', $agent));
-
+        
         if($request->ajax()){
-            return response()->json(['content'=>view('pages.agents.create')->render()],200);
+            return response()->json(['content'=>view('pages.agents.create.create-step-four',compact('agent'))->renderSections()['content']],200);
         }
-
-        return view('pages.agents.create.create-step-four');
+        return view('pages.agents.create.create-step-four',compact('agent', $agent));
     }
 
     public function postStepOne(Request $request)
     {
-        $validatedData = $request->validate([
+        $validatedData = Validator::make($request->all(),[
             'civilite'=> [
                 'required',
                   Rule::in(['M', 'Mll','Mme']),
@@ -118,6 +116,18 @@ class AgentsController extends Controller
             // 'matricule' => 'required',
             'prenoms' => 'required',
         ]);
+
+        //
+        if($validatedData->fails()){
+            if ($request->ajax()) {    
+                return response()->json($validatedData->errors(),422);
+            }
+          return redirect()
+                ->back()
+                ->withErrors($validatedData)
+                ->withInput();
+        }
+        $validatedData=$validatedData->validate();
         //Ajouter les champs non obligatoire
         $validatedData['matricule']=$request->matricule;
 
@@ -150,7 +160,11 @@ class AgentsController extends Controller
         $validatedData->sometimes('email','required|email', function ($input) use ($request) {
             return !is_null($request->email);
         });
+
         if($validatedData->fails()){
+            if ($request->ajax()) {    
+                return response()->json($validatedData->errors(),422);
+            }
           return redirect()
                 ->back()
                 ->withErrors($validatedData)
@@ -224,6 +238,9 @@ class AgentsController extends Controller
         // });
 
         if($validatedData->fails()){
+            if ($request->ajax()) {    
+                return response()->json($validatedData->errors(),422);
+            }
           return redirect()
                 ->back()
                 ->withErrors($validatedData)
@@ -299,6 +316,9 @@ class AgentsController extends Controller
         });
 
         if($validatedData->fails()){
+            if ($request->ajax()) {    
+                return response()->json($validatedData->errors(),422);
+            }
           return redirect()
                 ->back()
                 ->withErrors($validatedData)
@@ -361,7 +381,7 @@ class AgentsController extends Controller
     //     //Validation de données
     //     $v=$this->validationsAgent($request);
 
-    //     if($v->fails()){
+    //     if($validatedData->fails()){
     //       return redirect()
     //             ->back()
     //             ->withErrors($v)

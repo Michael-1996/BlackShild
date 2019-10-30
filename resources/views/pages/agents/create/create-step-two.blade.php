@@ -20,21 +20,21 @@
                         <div id="collapseTwo" class="panel-collapse">
                           <div class="box-body">
                             <div class="col-md-6">
-                              <div class="form-group @error('codepostal')  has-error @enderror">
+                              <div class="form-group codepostal @error('codepostal')  has-error @enderror">
                                 <label>Code postal</label>
                                 <input name="codepostal" type="text" class="form-control"  placeholder="Entrer le code postal" value="{{old('codepostal') ?: $agent->codepostal}}">
                                 @error('codepostal')
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
-                              <div class="form-group @error('commune')  has-error @enderror">
+                              <div class="form-group commune @error('commune')  has-error @enderror">
                                 <label>Commune</label>
                                 <input name="commune" type="text" class="form-control"  placeholder="Entrer la commune" value="{{old('commune') ?: $agent->commune}}">
                                 @error('commune')
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
-                              <div class="form-group @error('departement')  has-error @enderror">
+                              <div class="form-group departement @error('departement')  has-error @enderror">
                                 <label>Département</label>
                                 <input name="departement" type="text" class="form-control"  placeholder="Entrer le département" value="{{old('departement') ?: $agent->departement}}">
                                 @error('departement')
@@ -43,21 +43,21 @@
                               </div>
                             </div>
                             <div class="col-md-6">
-                              <div class="form-group @error('numeromobile')  has-error @enderror">
+                              <div class="form-group numeromobile @error('numeromobile')  has-error @enderror">
                                 <label>Numéro Mobile</label>
                                 <input name="numeromobile" type="text" class="form-control"  placeholder="Entrer le numéro mobile" value="{{old('numeromobile') ?: $agent->numeromobile}}">
                                 @error('numeromobile')
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
-                              <div class="form-group @error('numerofixe')  has-error @enderror">
+                              <div class="form-group numerofixe @error('numerofixe')  has-error @enderror">
                                 <label>Numéro Fixe</label>
                                 <input name="numerofixe" type="text" class="form-control"  placeholder="Entrer le numéro fixe" value="{{old('numerofixe') ?: $agent->numerofixe}}">
                                 @error('numerofixe')
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
-                              <div class="form-group @error('email')  has-error @enderror">
+                              <div class="form-group email @error('email')  has-error @enderror">
                                 <label>Adresse Mail</label>
                                 <input name="email" type="text" class="form-control"  placeholder="Entrer l'adresse mail" value="{{old('email') ?: $agent->email}}">
                                 @error('email')
@@ -72,9 +72,8 @@
 
                       <div style="overflow:auto;margin-right: 26px">
                         <div style="float:right;">
-                          <a href="{{route('agent.createStepOne')}}"  class="btn btn-flat btn-primary" id="prevBtn"{{--  onclick="nextPrev(-1)" --}}>Précédent</a>
-                          <button type="submit" class="btn btn-flat btn-primary" id="nextBtn"{{--  onclick="nextPrev(1)" --}}>Suivant</button>
-                        </div>
+                          <button type="button" class="btn btn-flat btn-primary" id="nextBtn" onclick="getPreviousForm('{{route('agent.createStepOne')}}')">Précédent</button>
+                          <button type="button" class="btn btn-flat btn-primary" id="nextBtn" onclick="submitForm('regForm')">Suivant</button>
                       </div>
 
                       <div style="text-align:center;margin-top:40px;">
