@@ -16,7 +16,7 @@ class CongesController extends Controller
      */
     public function index(Request $request)
     {
-        $conges=Conge::all();   
+        $conges=Conge::where('typeconge','<>',null)->get();
         
         if($request->ajax()){
             return response()->json(['content'=>view('pages.conges.index',compact('conges'))->renderSections()['content']],200);

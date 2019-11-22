@@ -11,12 +11,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Liste des Agents en congé/absent
+        Liste des Agents en congé
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i>Accueil</a></li>
         <li><a href="#">Gestion des agents</a></li>
-        <li class="active">Liste des agents</li>
+        <li class="active">Liste des agents en congé</li>
       </ol>
     </section>
 
@@ -39,7 +39,7 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Tous les agents en congé/absent</h3>
+              <h3 class="box-title">Tous les agents en congé</h3>
 {{--               <div class="box-tools">
                 <div class="input-group input-group-sm hidden-xs" style="width: 150px;">
                   <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">

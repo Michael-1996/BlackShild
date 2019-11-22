@@ -1,27 +1,6 @@
 @extends('layouts.app')
 
 @section('head')
-  <!-- iCheck for checkboxes and radio inputs -->
-  <link rel="stylesheet" href="{{asset('')}}plugins/iCheck/all.css">
-  <!-- Bootstrap Color Picker -->
-  <link rel="stylesheet" href="{{asset('')}}bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
-  <!-- Bootstrap time Picker -->
-  <link rel="stylesheet" href="{{asset('')}}plugins/timepicker/bootstrap-timepicker.min.css">
-  <!-- Select2 -->
-  <link rel="stylesheet" href="{{asset('')}}bower_components/select2/dist/css/select2.min.css">
-
-
-
-
-
-
-
-
-
-
-
-
-
   <style type="text/css">
 /* Style the form */
 /*#regForm {
@@ -56,7 +35,7 @@ input.invalid {
   height: 15px;
   width: 15px;
   margin: 0 2px;
-  background-color: #bbbbbb;
+  background-color: #868282;
   border: none;
   border-radius: 50%;
   display: inline-block;
@@ -70,26 +49,19 @@ input.invalid {
 
 /* Mark the steps that are finished and valid: */
 .step.finish {
-  background-color: #4CAF50;
+  background-color: #00ce08;
 }
 
+.select2-selection__rendered li.select2-selection__choice{
+  color: white;
+  background: #3C8DBC;
+}
+
+.select2-container--default .select2-selection--single{
+  border-radius: 0;
+  height: 20px;
+}
 </style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 @endsection
@@ -105,7 +77,7 @@ input.invalid {
       <ol class="breadcrumb">
         <li><a href="/"><i class="fa fa-dashboard"></i> Accueil</a></li>
         <li><a href="#">Gere les agents</a></li>
-        <li class="active">Ajouter</li>
+        <li class="active">Ajouter un nouvel agent</li>
       </ol>
     </section>
     <!-- Main content -->
@@ -113,7 +85,8 @@ input.invalid {
       <!-- /.box -->
       <div class="box box-primary">
         <div class="box-header with-border">
-          <h3 class="box-title">Fiche Agent</h3>
+          <h3 class="text-center">FICHE AGENT</h3>
+          
                 <!-- START ACCORDION & CAROUSEL-->
 
           <div class="row">
@@ -158,27 +131,6 @@ input.invalid {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <!-- /.content -->
   {{-- </div> --}}
   <!-- /.content-wrapper -->
@@ -203,14 +155,6 @@ input.invalid {
 <script type="text/javascript">
   //Affichae des champ des informations administrative
   var nationalite=$("select[name='nationalite'] :selected")
-  var carteidentite=$("#div_carteidentite")
-  var numerocarteidentite=$("#div_numerocarteidentite")
-  var dateexpircni=$("#div_dateexpircni")
-  var numeroetranger=$("#div_numeroetranger")
-  var lieudelivrancecs=$("#div_lieudelivrancecs")
-  var etablissementcartedesejour=$("#div_etablissementcartedesejour")
-  var cartedesejour=$("#div_cartedesejour")
-  var expirationcartedesejour=$("#div_expirationcartedesejour")
 
   $("select[name='nationalite']").change(function(){
     var SelectedValue = $("option:selected", this).val();
@@ -220,28 +164,26 @@ input.invalid {
   displayElement("{{ old('nationalite') ?: 'FR' }}")
 
   function displayElement(SelectedValue='FR'){
-    if(SelectedValue==='FR'){
+    if(SelectedValue=='FR'){
       //Show
-      carteidentite.show(500)
-      numerocarteidentite.show(500)
-      dateexpircni.show(500)
+      $("#div_carteidentite").show(500)
+      $("#div_numerocarteidentite").show(500)
       //Hide
-      numeroetranger.hide(500)
-      lieudelivrancecs.hide(500)
-      etablissementcartedesejour.hide(500)
-      cartedesejour.hide(500)
-      expirationcartedesejour.hide(500)
+      $("#div_numeroetranger").hide(500)
+      $("#div_lieudelivrancecs").hide(500)
+      $("#div_etablissementcartedesejour").hide(500)
+      $("#div_cartedesejour").hide(500)
+      $("#div_expirationcartedesejour").hide(500)
     }else{
       //Show
-      numeroetranger.show(500)
-      lieudelivrancecs.show(500)
-      etablissementcartedesejour.show(500)
-      cartedesejour.show(500)
-      expirationcartedesejour.show(500)
+      $("#div_numeroetranger").show(500)
+      $("#div_lieudelivrancecs").show(500)
+      $("#div_etablissementcartedesejour").show(500)
+      $("#div_cartedesejour").show(500)
+      $("#div_expirationcartedesejour").show(500)
       //Hide
-      carteidentite.hide(500)
-      numerocarteidentite.hide(500)
-      dateexpircni.hide(500)
+      $("#div_carteidentite").hide(500)
+      $("#div_numerocarteidentite").hide(500)
     }
   }
 
@@ -293,7 +235,6 @@ input.invalid {
       div_dureeducontrat.show(500)
     }
   }
-
 </script>
 
 
@@ -314,7 +255,6 @@ input.invalid {
 
 
 
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
 {{-- <script type="text/javascript">
   var currentTab = 0; // Current tab is set to be the first tab (0)
@@ -394,17 +334,43 @@ input.invalid {
 
 
 
+<script type="text/javascript">
+  $(document).ready( function() {
+      $(document).on('change', '.btn-file :file', function() {
+    var input = $(this),
+      label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+    input.trigger('fileselect', [label]);
+    });
 
+    $('.btn-file :file').on('fileselect', function(event, label) {
+        
+        var input = $(this).parents('.input-group').find(':text'),
+            log = label;
+        
+        if( input.length ) {
+            input.val(log);
+        } else {
+            if( log ) alert(log);
+        }
+      
+    });
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function (e) {
+                $('#img-upload').attr('src', e.target.result);
+                $('#img-upload').css('height','200px');
 
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
 
-
-
-
-
-
-
-
-
-
-
+    $("#imgInp").change(function(){
+        readURL(this);
+    });   
+  });
+</script>
 @endsection

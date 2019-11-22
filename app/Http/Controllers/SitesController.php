@@ -94,7 +94,7 @@ class SitesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
         $site=Site::where('id',$id)->firstOrFail();
 
@@ -125,6 +125,10 @@ class SitesController extends Controller
                 ->withErrors($v)
                 ->withInput();
         }
+        if(is_null($request->photo))
+            $photo=$site->photo;
+        else
+            $photo=BlackshFonctions::upload($request);
         //Enrégistrements des informations
         $site->update([
             'nom' => $request->nom,
@@ -133,7 +137,7 @@ class SitesController extends Controller
             'ville' => $request->ville,
             'telephone' => $request->telephone,
             'site_web' => $request->site_web,
-            'photo' => BlackshFonctions::upload($request),
+            'photo' => $photo,
             'nommanager' => $request->nommanager,
             'telephonemanager' => $request->telephonemanager,
         ]);

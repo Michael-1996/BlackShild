@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use App\Models\Site;
 use App\Models\Agent;
 use App\Models\Planning;
+use App\Models\Jourferie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -31,7 +32,7 @@ class PlanningController extends Controller
         $statut='provisoire';
 
         if($request->ajax()){
-            return response()->json(['content'=>view('pages.plannings.index',compact('agents','action','title','statut'))->renderSections()['content']],200);
+            return response()->json(['content'=>view('pages.plannings.index',compact('agents','action','title','statut'))->renderSections()],200);
         }
 
         return view('pages.plannings.index',compact('agents','action','title','statut'));
@@ -334,6 +335,7 @@ class PlanningController extends Controller
         //Nombre d'heure
         $hours = $heure_fin->diffInHours($heure_debut);
         //Heure de jour est 15h maximum
+        $margeHeure=0;
         if($hours>15){
             $margeHeure=$hours-15;
             $hours=15;
@@ -358,6 +360,9 @@ class PlanningController extends Controller
     }
 
     public function heure_total_nuit(Request $request){
+        //Onrecupere les jours feries
+        // $jousferie=Jourferie::all()->toArray();
+        $jousferie=Jourferie::select('dateferie')->pluck('dateferie')->toArray();
         //difference between two dates
         $date_debut = date_create($request->date_debut);
         $date_fin = date_create($request->date_fin);            
@@ -373,7 +378,7 @@ class PlanningController extends Controller
             $margeHeure=$hours-15;
             $hours=15;
         }
-
+        // dd(in_array(Carbon::parse($request->date_debut)->format('d-m'), $jousferie));
         if($request->jourferie==='on'){
             $hours = $heure_fin->diffInHours($heure_debut)*2;
         }
@@ -434,6 +439,9 @@ class PlanningController extends Controller
             $plannings[$i]['heure_total_jour']=$this->heure_total_jour($request);
             $plannings[$i]['heure_total_nuit']=$this->heure_total_nuit($request);
             $plannings[$i]['statut']='provisoire';
+            $today=Carbon::now()->toDateTimeString();
+            $plannings[$i]['created_at']=$today;
+            $plannings[$i]['updated_at']=$today;
             $i++;
             //On passe au mois prochain
             if(Carbon::parse($dateDeb)->format('d')==31){

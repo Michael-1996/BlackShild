@@ -56,7 +56,7 @@
                   @endforeach
                 @else
                   <tr>
-                    <td colspan="7"><p class="text-center">Aucun agents enrégistrer pour le moment</p></td>
+                    <td colspan="7"><p class="text-center">Aucun planning ajouté pour le moment</p></td>
                   </tr>
                 @endif
               </table>

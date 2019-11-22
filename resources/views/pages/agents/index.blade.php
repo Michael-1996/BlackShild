@@ -11,12 +11,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Liste des Agents
+        Registre Unique du Personnel
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i>Accueil</a></li>
         <li><a href="#">Gestion des agents</a></li>
-        <li class="active">Liste des agnts</li>
+        <li class="active">Registre Unique du Personnel</li>
       </ol>
     </section>
 
@@ -48,6 +48,13 @@
                   <div class="input-group-btn">
                     <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
                   </div>
+                </div>
+              </div>
+              <div class="box-tools" style="margin-right: 30px">
+                <div class="input-group input-group-sm hidden-xs" style="width: 30px;">
+                  <a class="btn btn-sm btn-social btn-vk">
+                    <i class="fa fa-pdf"></i> Export
+                  </a>
                 </div>
               </div>
             </div>

@@ -45,8 +45,8 @@
                 @method('patch')
                 <div class="box-body">
                   <div class="form-group @error('nom')  has-error @enderror">
-                    <label for="exampleInputEmail1">Etablissement</label>
-                    <input name="nom" type="text" class="form-control" id="exampleInputEmail1" placeholder="Entrer le nom de l'nom" value="{{old('nom') ?: $site->nom}}">
+                    <label for="exampleInputEmail1">Nom du site</label>
+                    <input name="nom" type="text" class="form-control" id="exampleInputEmail1" placeholder="Entrer le nom du site" value="{{old('nom') ?: $site->nom}}">
                     @error('nom')
                         <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                     @enderror
@@ -74,14 +74,14 @@
                   </div>
                   <div class="form-group @error('telephone')  has-error @enderror">
                     <label for="exampleInputPassword1">Téléphone</label>
-                    <input name="telephone" type="text" class="form-control" id="exampleInputPassword1" placeholder="Entrer le telephone" value="{{old('telephone') ?: $site->telephone}}">
+                    <input name="telephone" type="text" class="form-control" id="exampleInputPassword1" placeholder="Entrer le numéro de téléphone" value="{{old('telephone') ?: $site->telephone}}">
                     @error('telephone')
                         <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                     @enderror
                   </div>
                   <div class="form-group @error('site_web')  has-error @enderror">
                     <label for="exampleInputPassword1">Site Web</label>
-                    <input name="site_web" type="text" class="form-control" id="exampleInputPassword1" placeholder="Entrer l'adresse du site" value="{{old('site_web') ?: $site->site_web}}">
+                    <input name="site_web" type="text" class="form-control" id="exampleInputPassword1" placeholder="Entrer l'adresse web du site" value="{{old('site_web') ?: $site->site_web}}">
                     @error('site_web')
                         <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                     @enderror
@@ -101,7 +101,7 @@
                                   Parcourir… <input name="photo" type="file" id="imgInp">
                               </span>
                           </span>
-                          <input type="text" class="form-control">
+                          <input type="text" class="form-control" value="{{str_replace('uploads/img/sites/','',old('photo') ?: $site->photo)}}" >
                       </div>
                       @error('photo')
                           <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
@@ -111,14 +111,14 @@
                   <hr>
                   <div class="form-group @error('nommanager')  has-error @enderror">
                     <label for="exampleInputPassword1">Nom du Manager du site</label>
-                    <input name="nommanager" type="text" class="form-control" id="exampleInputPassword1" placeholder="Entrer le nommanager" value="{{old('nommanager') ?: $site->nommanager}}">
+                    <input name="nommanager" type="text" class="form-control" id="exampleInputPassword1" placeholder="Entrer le nom du manager du site" value="{{old('nommanager') ?: $site->nommanager}}">
                     @error('nommanager')
                         <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                     @enderror
                   </div>
                   <div class="form-group @error('telephonemanager')  has-error @enderror">
                     <label for="exampleInputPassword1">Téléphone du manager</label>
-                    <input name="telephonemanager" type="text" class="form-control" id="exampleInputPassword1" placeholder="Entrer le telephonemanager" value="{{old('telephonemanager') ?: $site->telephonemanager}}">
+                    <input name="telephonemanager" type="text" class="form-control" id="exampleInputPassword1" placeholder="Entrer le téléphone du manager du site" value="{{old('telephonemanager') ?: $site->telephonemanager}}">
                     @error('telephonemanager')
                         <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                     @enderror

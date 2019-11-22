@@ -18,11 +18,11 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Ajouter un nouveau congé/absence
+        Ajouter un nouveau congé
       </h1>
       <ol class="breadcrumb">
         <li><a href="/"><i class="fa fa-dashboard"></i> Accueil</a></li>
-        <li><a href="#">Sites de déploiements</a></li>
+        <li><a href="#">Gestion des congés</a></li>
         <li class="active">Ajouter</li>
       </ol>
     </section>
@@ -37,7 +37,7 @@
             <!-- general form elements -->
             <div class="box box-primary">
               <div class="box-header with-border">
-                <h3 class="box-title">Nouveau Congé/Absence</h3>
+                <h3 class="box-title">Nouveau Congé</h3>
               </div>
               <!-- /.box-header -->
               <!-- form start -->

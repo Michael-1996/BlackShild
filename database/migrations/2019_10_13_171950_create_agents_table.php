@@ -17,6 +17,7 @@ class CreateAgentsTable extends Migration
         Schema::create('agents', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('civilite');
+            $table->unsignedBigInteger('departement_id')->nullable();
             $table->string('statutmatrimonial');
             $table->string('nom');
             $table->string('prenoms');
@@ -25,18 +26,16 @@ class CreateAgentsTable extends Migration
             $table->string('matricule')->nullable();
             $table->string('codepostal')->nullable();
             $table->string('numeromobile')->nullable();
-            $table->string('commune')->nullable();
+            $table->string('adressegeo')->nullable();
             $table->string('numerofixe')->nullable();
-            $table->string('departement')->nullable();
             $table->string('nationalite');
             $table->string('numerocni')->nullable();
-            $table->date('dateexpircni')->nullable();
             $table->string('numeropermis')->nullable();
+            $table->string('lieudelivrancepermis')->nullable();
             $table->string('categoriepermis')->nullable();
             $table->date('dateetablpermis')->nullable();
             $table->date('dateexpirpermis')->nullable();
             $table->string('numeross')->nullable();
-            $table->string('numeroalf')->nullable();
             $table->string('numeroetranger')->nullable();
             $table->string('lieudelivrancecs')->nullable();
             $table->date('etablissementcartedesejour')->nullable();
@@ -48,6 +47,10 @@ class CreateAgentsTable extends Migration
             $table->string('nomchien')->nullable();
             $table->date('datevaliditevaccin')->nullable();
             $table->timestamps();
+
+            $table->foreign('departement_id')->references('id')->on('departements')
+            ->onDelete('restrict')
+            ->onUpdate('restrict');
         });
 
         //creation d'un agent

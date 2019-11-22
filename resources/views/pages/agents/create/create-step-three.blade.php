@@ -38,8 +38,15 @@
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
+                              <div class="form-group lieudelivrancepermis @error('lieudelivrancepermis')  has-error @enderror">
+                                <label>Lieu de délivrance du permis</label>
+                                <input name="lieudelivrancepermis" type="text" class="form-control"  placeholder="Entrer le lieu de délivrance du permis" value="{{old('lieudelivrancepermis') ?: $agent->lieudelivrancepermis}}">
+                                @error('lieudelivrancepermis')
+                                    <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
+                                @enderror
+                              </div>
                               <div class="form-group dateetablpermis @error('dateetablpermis')  has-error @enderror">
-                                <label>Date détablissement du permis</label>
+                                <label>Date d'établissement du permis</label>
                                 <div class="input-group date">
                                   <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
@@ -96,13 +103,6 @@
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
-                              <div class="form-group dateexpircni @error('dateexpircni')  has-error @enderror" id="div_dateexpircni">
-                                <label>Date d'expiration CNI</label>
-                                <input name="dateexpircni" type="date" class="form-control" value="{{old('dateexpircni') ?: $agent->dateexpircni}}">
-                                @error('dateexpircni')
-                                    <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
-                                @enderror
-                              </div>
                               <div class="form-group numeroetranger @error('numeroetranger')  has-error @enderror" id="div_numeroetranger" style="display: none">
                                 <label>Numéro étranger</label>
                                 <input name="numeroetranger" type="text" class="form-control"  placeholder="Entrer le numéro étranger" value="{{old('numeroetranger') ?: $agent->numeroetranger}}">
@@ -144,19 +144,44 @@
                                 @enderror
                               </div>
                               <div class="form-group numeross @error('numeross')  has-error @enderror" id="div_lieudelivrance">
-                                <label>Numéro de sécurité social</label>
+                                <label>Numéro de sécurité sociale</label>
                                 <input name="numeross" type="text" class="form-control"  placeholder="Entrer le numéro de sécurité social" value="{{old('numeross') ?: $agent->numeross}}">
                                 @error('numeross')
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
-                              <div class="form-group numeroalf @error('numeroalf')  has-error @enderror">
-                                <label>Numéro d'allocation familiale</label>
-                                <input name="numeroalf" type="text" class="form-control"  placeholder="Entrer le numéro d'allocation familiale" value="{{old('numeroalf') ?: $agent->numeroalf}}">
-                                @error('numeroalf')
-                                    <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
-                                @enderror
-                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-6 @error('date_debut')  has-error @enderror" style="padding-left: 0px">
+                                  <label>Recto CNI</label>
+                                  <div class="input-group">
+                                      <span class="input-group-btn">
+                                          <span class="btn btn-default btn-file">
+                                              Parcourir… <input name="photo" type="file" id="imgInp">
+                                          </span>
+                                      </span>
+                                      <input type="text" class="form-control">
+                                  </div>
+                                  @error('photo')
+                                      <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
+                                  @enderror
+                                  <img id='img-upload' class="img img-responsive img-thumbnail"  src="{{old('photo') ?:''}}"/>
+                                </div>
+                                <div class="form-group col-md-6 @error('date_debut')  has-error @enderror" style="padding-left: 0px">
+                                  <label>Verso CNI</label>
+                                  <div class="input-group">
+                                      <span class="input-group-btn">
+                                          <span class="btn btn-default btn-file">
+                                              Parcourir… <input name="photo" type="file" id="imgInp">
+                                          </span>
+                                      </span>
+                                      <input type="text" class="form-control">
+                                  </div>
+                                  @error('photo')
+                                      <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
+                                  @enderror
+                                  <img id='img-upload' class="img img-responsive img-thumbnail"  src="{{old('photo') ?:''}}"/>
+                                </div>
+                              </div>  
                             </div>
 
                           </div>
@@ -167,15 +192,15 @@
 
                       <div style="overflow:auto;margin-right: 26px">
                         <div style="float:right;">
-                          <button type="button" class="btn btn-flat btn-primary" id="nextBtn" onclick="getPreviousForm('{{route('agent.createStepTwo')}}')">Précédent</button>
-                          <button type="button" class="btn btn-flat btn-primary" id="nextBtn" onclick="submitForm('regForm')">Suivant</button>
+                          <button type="button" class="btn btn-flat btn-primary" id="nextBtn" onclick="getPreviousForm('{{route('agent.createStepTwo')}}')">Etape Précédente</button>
+                          <button type="button" class="btn btn-flat btn-primary" id="nextBtn" onclick="submitForm('regForm')">Etape Suivante</button>
                         </div>
                       </div>
 
                       <div style="text-align:center;margin-top:40px;">
-                        <span class="step"></span>
-                        <span class="step"></span>
-                        <span class="step"></span>
+                        <span class="step finish"></span>
+                        <span class="step finish"></span>
+                        <span class="step active"></span>
                         <span class="step"></span>
                       </div>
                     <!-- /.box-body -->
@@ -184,3 +209,41 @@
                   <!-- /.box-body -->
                 </form>
               @endsection
+
+<script type="text/javascript">
+  $(document).on('change', '.btn-file :file', function() {
+    var input = $(this),
+      label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+    input.trigger('fileselect', [label]);
+    });
+
+    $('.btn-file :file').on('fileselect', function(event, label) {
+        
+        var input = $(this).parents('.input-group').find(':text'),
+            log = label;
+        
+        if( input.length ) {
+            input.val(log);
+        } else {
+            if( log ) alert(log);
+        }
+      
+    });
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function (e) {
+                $('#img-upload').attr('src', e.target.result);
+                $('#img-upload').css('height','200px');
+
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#imgInp").change(function(){
+        readURL(this);
+    });   
+</script>

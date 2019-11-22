@@ -137,16 +137,16 @@
 
                       <div style="overflow:auto;margin-right: 26px">
                         <div style="float:right;">
-                          <button type="button" class="btn btn-flat btn-primary" id="nextBtn" onclick="getPreviousForm('{{route('agent.createStepThree')}}')">Précédent</button>
+                          <button type="button" class="btn btn-flat btn-primary" id="nextBtn" onclick="getPreviousForm('{{route('agent.createStepThree')}}')">Etape Précédente</button>
                           <button type="button" class="btn btn-flat btn-primary" id="nextBtn" onclick="submitForm('regForm')">Ajouter</button>
                         </div>
                       </div>
 
                       <div style="text-align:center;margin-top:40px;">
-                        <span class="step"></span>
-                        <span class="step"></span>
-                        <span class="step"></span>
-                        <span class="step"></span>
+                        <span class="step finish"></span>
+                        <span class="step finish"></span>
+                        <span class="step finish"></span>
+                        <span class="step active"></span>
                       </div>
                     <!-- /.box-body -->
                     </div>

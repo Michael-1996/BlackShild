@@ -58,6 +58,13 @@
                       </td>
                       {{-- <td><span class="label label-success">congé annuel</span></td> --}}
                       <td>
+                        <a href="{{route('conge.edit',$conge->id)}}" class="label label-primary"  data-toggle="tooltip" data-placement="bottom" title="Afficher"><i class="fa fa-eye"></i></a>
+                        <a href="{{route('conge.edit',$conge->id)}}" class="label label-primary"><i class="fa fa-pencil" data-toggle="tooltip" data-placement="bottom" title="Modifier"></i></a>
+                        <span data-toggle="modal" data-link="{{route('conge.destroy',$conge->id)}}"   data-target="#modal-delete-element" data-div_refresh="div_conge_table" >
+                          <a href="#" class="label label-danger"  data-div_refresh="div_conge_table" data-toggle="tooltip" data-placement="bottom" title="Supprimer"><i class="fa fa fa-trash"></i></a>
+                        </span>
+                      </td> 
+{{--                       <td>
                         <div class="input-group input-group-sm">
                           <div class="btn-group">
                             <button type="button" class="btn btn-sm btn-warning">Action</button>
@@ -72,9 +79,13 @@
                             </ul>
                           </div>
                         </div>
-                      </td>                
+                      </td>   --}}              
                     </tr>
                   @endforeach
+                @else
+                  <tr>
+                    <td colspan="7"><p class="text-center">Aucun congé enrégistré pour le moment</p></td>
+                  </tr>
                 @endif
               </table>
               <br>

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Validator;
 use App\Models\Agent;
+use App\Models\Departement;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Helpers\BlackshFonctions;
@@ -52,6 +54,8 @@ class AgentsController extends Controller
         if($request->ajax()){
             return response()->json(['content'=>view('pages.agents.create.create-step-one',compact('agent'))->renderSections()['content']],200);
         }
+        
+        // return view('pages.agents.create.create',compact('agent', $agent));
         return view('pages.agents.create.create-step-one',compact('agent', $agent));
     }
 
@@ -63,11 +67,12 @@ class AgentsController extends Controller
         }
 
         $agent = $request->session()->get('agent');
+        $departements = Departement::all();
         
         if($request->ajax()){
-            return response()->json(['content'=>view('pages.agents.create.create-step-two',compact('agent'))->renderSections()['content']],200);
+            return response()->json(['content'=>view('pages.agents.create.create-step-two',compact('agent','departements'))->renderSections()['content']],200);
         }
-        return view('pages.agents.create.create-step-two',compact('agent', $agent));
+        return view('pages.agents.create.create-step-two',compact('agent', 'departements'));
     }
 
     public function createStepThree(Request $request)
@@ -112,7 +117,7 @@ class AgentsController extends Controller
                   Rule::in(['mar', 'cel','veuf']),
               ],
             'nom' => 'required|min:2',
-            'datenaissance' => 'required',
+            'datenaissance' => 'required|date|before:18 years ago',
             // 'matricule' => 'required',
             'prenoms' => 'required',
         ]);
@@ -129,7 +134,8 @@ class AgentsController extends Controller
         }
         $validatedData=$validatedData->validate();
         //Ajouter les champs non obligatoire
-        $validatedData['matricule']=$request->matricule;
+        $matricule=strtoupper(substr($request->nom, 0, 3).substr($request->prenoms, 0, 3).Carbon::now()->format('dmy'));
+        $validatedData['matricule']=$matricule;
 
         if(empty($request->session()->get('agent'))){
             $agent = new Agent();
@@ -177,9 +183,10 @@ class AgentsController extends Controller
         $validatedData['numeromobile']=$request->numeromobile;
         $validatedData['email']=$request->email;
         $validatedData['codepostal']=$request->codepostal;
-        $validatedData['commune']=$request->commune;
+        $validatedData['adressegeo']=$request->adressegeo;
         $validatedData['departement']=$request->departement;
         $validatedData['numerofixe']=$request->numerofixe;
+        $validatedData['departement_id']=$request->departement;
 
         if(empty($request->session()->get('agent'))){
             $agent = new Agent();
@@ -191,7 +198,6 @@ class AgentsController extends Controller
             $request->session()->put('agent', $agent);
         }
 
-        // dd($agent);
         return redirect()->route('agent.createStepThree');
     }
 
@@ -206,10 +212,6 @@ class AgentsController extends Controller
         ]);
         //Validation
         $validatedData->sometimes('numerocni','required|min:5', function ($input) use ($request) {
-            return $request->nationalite==='FR';
-        });
-
-        $validatedData->sometimes('dateexpircni','required|date', function ($input) use ($request) {
             return $request->nationalite==='FR';
         });
 
@@ -233,6 +235,9 @@ class AgentsController extends Controller
         $validatedData->sometimes(['dateetablpermis','dateexpirpermis'],'required|date', function ($input) use ($request) {
             return !is_null($request->numeropermis);
         });
+        $validatedData->sometimes('lieudelivrancepermis','required', function ($input) use ($request) {
+            return !is_null($request->numeropermis);
+        });
         // $validatedData->sometimes('categoriepermis',['required',Rule::in(['AM','A','A1','A2','B','B1','BE','C','C1','CE','C1E','D','D1','DE','D1E'])], function ($input) use ($request) {
         //     return !is_null($request->numeropermis);
         // });
@@ -251,16 +256,15 @@ class AgentsController extends Controller
         //Recupération de la catégorie sous forme de chaine
         $categoriepermis=BlackshFonctions::arrayToString($request->categoriepermis);
         $validatedData['numeropermis']=$request->numeropermis;
+        $validatedData['lieudelivrancepermis']=$request->lieudelivrancepermis;
         $validatedData['dateetablpermis']=$request->dateetablpermis;
         $validatedData['dateexpirpermis']=$request->dateexpirpermis;
         $validatedData['categoriepermis']=$categoriepermis;
 
         $validatedData['numeross']=$request->numeross;
-        $validatedData['numeroalf']=$request->numeroalf;
 
         if($request->nationalite=='FR'){
           $validatedData['numerocni']=$request->numerocni;
-          $validatedData['dateexpircni']=$request->dateexpircni;
 
           $validatedData['numeroetranger']=null;
           $validatedData['lieudelivrancecs']=null;
@@ -268,7 +272,6 @@ class AgentsController extends Controller
           $validatedData['expirationcartedesejour']=null;
         }else{
           $validatedData['numerocni']=null;
-          $validatedData['dateexpircni']=null;
 
           $validatedData['numeroetranger']=$request->numeroetranger;
           $validatedData['lieudelivrancecs']=$request->lieudelivrancecs;
@@ -403,7 +406,7 @@ class AgentsController extends Controller
     //       'typecontrat' => $request->typecontrat,
     //       'dureeducontrat' => $request->dureeducontrat,
     //       'nationalite'=>$request->nationalite,
-    //       'commune' => $request->commune,
+    //       'adressegeo' => $request->adressegeo,
     //       'departement' => $request->departement,
     //       'numeromobile' => $request->numeromobile,
     //       'numerofixe' => $request->numerofixe,
@@ -414,10 +417,8 @@ class AgentsController extends Controller
     //       'dateetablpermis' => $request->dateetablpermis,
     //       'dateexpirpermis' => $request->dateexpirpermis,
     //       'numeross' => $request->numeross,
-    //       'numeroalf' => $request->numeroalf,
     //       'numeroetranger' => $request->numeroetranger,
     //       'lieudelivrancecs' => $request->lieudelivrancecs,
-    //       'numeroalf' => $request->numeroalf,
     //       'etablissementcartedesejour' => $request->etablissementcartedesejour,
     //       'expirationcartedesejour' => $request->expirationcartedesejour,
     //       'qualification' => $qualification,
@@ -494,21 +495,19 @@ class AgentsController extends Controller
           'typecontrat' => $request->typecontrat,
           'dureeducontrat' => $request->dureeducontrat,
           'nationalite'=>$request->nationalite,
-          'commune' => $request->commune,
+          'adressegeo' => $request->adressegeo,
           'departement' => $request->departement,
           'numeromobile' => $request->numeromobile,
           'numerofixe' => $request->numerofixe,
           'numerocni' => $request->numerocni,
-          'dateexpircni' => $request->dateexpircni,
           'numeropermis' => $request->numeropermis,
+          'lieudelivrancepermis' => $request->lieudelivrancepermis,
           'categoriepermis' => $categoriepermis,
           'dateetablpermis' => $request->dateetablpermis,
           'dateexpirpermis' => $request->dateexpirpermis,
           'numeross' => $request->numeross,
-          'numeroalf' => $request->numeroalf,
           'numeroetranger' => $request->numeroetranger,
           'lieudelivrancecs' => $request->lieudelivrancecs,
-          'numeroalf' => $request->numeroalf,
           'etablissementcartedesejour' => $request->etablissementcartedesejour,
           'expirationcartedesejour' => $request->expirationcartedesejour,
           'qualification' => $qualification,

@@ -18,7 +18,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Modifier un congé/absence
+        Modifier un congé
       </h1>
       <ol class="breadcrumb">
         <li><a href="/"><i class="fa fa-dashboard"></i> Accueil</a></li>
@@ -37,7 +37,7 @@
             <!-- general form elements -->
             <div class="box box-primary">
               <div class="box-header with-border">
-                <h3 class="box-title">Modifier Congé/Absence</h3>
+                <h3 class="box-title">Modifier Congé</h3>
               </div>
               <!-- /.box-header -->
               <!-- form start -->

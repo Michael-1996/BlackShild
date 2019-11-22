@@ -27,17 +27,24 @@
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
-                              <div class="form-group commune @error('commune')  has-error @enderror">
-                                <label>Commune</label>
-                                <input name="commune" type="text" class="form-control"  placeholder="Entrer la commune" value="{{old('commune') ?: $agent->commune}}">
-                                @error('commune')
-                                    <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
-                                @enderror
-                              </div>
-                              <div class="form-group departement @error('departement')  has-error @enderror">
+                              <div class="form-group">
                                 <label>Département</label>
-                                <input name="departement" type="text" class="form-control"  placeholder="Entrer le département" value="{{old('departement') ?: $agent->departement}}">
-                                @error('departement')
+                                <select class="form-control select2 departement" name="departement">
+                                  <option value="">Choisir le département</option>
+                                  @if(count($departements)>0)
+                                    @foreach($departements as $departement)
+                                      <option value="{{$departement->id}}" {{old('departement')==$departement->id || $agent->departement_id==$departement->id ? 'selected' : null}}>{{$departement->nom}}</option>
+                                    @endforeach
+                                  @endif
+                                  @error('departement')
+                                      <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
+                                  @enderror
+                              </select>
+                              </div>
+                              <div class="form-group adressegeo @error('adressegeo')  has-error @enderror">
+                                <label>Adresse géographique</label>
+                                <input name="adressegeo" type="text" class="form-control"  placeholder="Entrer l'adresse géographique" value="{{old('adressegeo') ?: $agent->adressegeo}}">
+                                @error('adressegeo')
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
@@ -72,13 +79,13 @@
 
                       <div style="overflow:auto;margin-right: 26px">
                         <div style="float:right;">
-                          <button type="button" class="btn btn-flat btn-primary" id="nextBtn" onclick="getPreviousForm('{{route('agent.createStepOne')}}')">Précédent</button>
-                          <button type="button" class="btn btn-flat btn-primary" id="nextBtn" onclick="submitForm('regForm')">Suivant</button>
+                          <button type="button" class="btn btn-flat btn-primary" id="nextBtn" onclick="getPreviousForm('{{route('agent.createStepOne')}}')">Etape Précédente</button>
+                          <button type="button" class="btn btn-flat btn-primary" id="nextBtn" onclick="submitForm('regForm')">Etape Suivante</button>
                       </div>
 
                       <div style="text-align:center;margin-top:40px;">
-                        <span class="step"></span>
-                        <span class="step"></span>
+                        <span class="step finish"></span>
+                        <span class="step active"></span>
                         <span class="step"></span>
                         <span class="step"></span>
                       </div>

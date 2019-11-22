@@ -46,9 +46,9 @@
     <!-- fullCalendar -->
   <link rel="stylesheet" href="{{asset('')}}/bower_components/fullcalendar/dist/fullcalendar.min.css">
   <link rel="stylesheet" href="{{asset('')}}/bower_components/fullcalendar/dist/fullcalendar.print.min.css" media="print">
-{{--     <!-- Select2 -->
+    <!-- Select2 -->
   <link rel="stylesheet" href="{{asset('')}}bower_components/select2/dist/css/select2.min.css">
- --}}
+
 
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -59,9 +59,11 @@
     <!-- Logo -->
     <a href="index2.html" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>A</b>LT</span>
+      {{-- <span class="logo-mini"><b>A</b>LT</span> --}}
+      <span class="logo-mini"><b>BSS</b></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Admin</b>LTE</span>
+      {{-- <span class="logo-lg"><b>Admin</b>LTE</span> --}}
+      <span class="logo-lg"><b>BlackShild</b> Security</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -86,7 +88,7 @@
                   <li><!-- start message -->
                     <a href="#">
                       <div class="pull-left">
-                        <img src="{{asset('')}}dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                        <img src="{{asset('')}}assets/img/logo.png" class="img-circle" alt="User Image">
                       </div>
                       <h4>
                         Support Team
@@ -99,7 +101,7 @@
                   <li>
                     <a href="#">
                       <div class="pull-left">
-                        <img src="dist/img/user3-128x128.jpg" class="img-circle" alt="User Image">
+                        <img src="{{asset('')}}assets/img/logo.png" class="img-circle" alt="User Image">
                       </div>
                       <h4>
                         AdminLTE Design Team
@@ -191,7 +193,7 @@
               <li class="footer"><a href="#">View all</a></li>
             </ul>
           </li>
-          <!-- Tasks: style can be found in dropdown.less -->
+{{--           <!-- Tasks: style can be found in dropdown.less -->
           <li class="dropdown tasks-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-flag-o"></i>
@@ -268,25 +270,25 @@
                 <a href="#">View all tasks</a>
               </li>
             </ul>
-          </li>
+          </li> --}}
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="{{asset('')}}dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-              <span class="hidden-xs">Alexander Pierce</span>
+              <img src="{{asset('')}}assets/img/logo.png" class="user-image" alt="User Image">
+              <span class="hidden-xs">{{Auth::user()->nom.' '.Auth::user()->prenoms}}</span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="{{asset('')}}dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <img src="{{asset('')}}assets/img/logo.png" class="img-circle" alt="User Image">
 
                 <p>
-                  Alexander Pierce - Web Developer
-                  <small>Member since Nov. 2012</small>
+                  {{Auth::user()->nom.' '.Auth::user()->prenoms}} - Responsable de BSS
+                  <small>Depuis Janvier 2013</small>
                 </p>
               </li>
               <!-- Menu Body -->
-              <li class="user-body">
+              {{-- <li class="user-body">
                 <div class="row">
                   <div class="col-xs-4 text-center">
                     <a href="#">Followers</a>
@@ -299,15 +301,25 @@
                   </div>
                 </div>
                 <!-- /.row -->
-              </li>
+              </li> --}}
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a href="#" class="btn btn-default btn-flat">Profil</a>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                  {{-- <a href="{{route('logout')}}" class="btn btn-default btn-flat">Deconnexion</a> --}}
+                  <a class="btn btn-default btn-flat" href="{{ route('logout') }}"
+                   onclick="event.preventDefault();
+                                 document.getElementById('logout-form').submit();">
+                    Deconnexion
+                  </a>
+
+                  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                      @csrf
+                  </form>
                 </div>
+
               </li>
             </ul>
           </li>
@@ -326,11 +338,11 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="{{asset('')}}dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+          <img src="{{asset('')}}assets/img/logo.png" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Alexander Pierce</p>
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+          <p>{{Auth::user()->nom.' '.Auth::user()->prenoms}}</p>
+          <a href="#"><i class="fa fa-circle text-success"></i> En ligne</a>
         </div>
       </div>
       <!-- search form -->
@@ -348,7 +360,7 @@
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
         <li class="{{Request::is('/') ? 'active' : null}}">
-          <a href="/" onclick="getPage('{{route('home')}}')">
+          <a href="/dashboard" onclick="getPage('{{route('home')}}')">
             <i class="fa fa-dashboard"></i> <span>Tableau de bord</span>
           </a>
         </li>
@@ -362,10 +374,22 @@
           </a>
           <ul class="treeview-menu">
             <li class="{{(Request::is('agents/ajouter/*')) ? 'active' : null}}"><a href="{{route('agent.createStepOne')}}" {{-- onclick="getPage('{{route('agent.create')}}')" --}}><i class="fa fa-circle-o {{(Request::is('agents/ajouter/*')) ? 'text-aqua' : null}}"></i>Ajouter un agent</a></li>
-            <li class="{{(Request::is('agents')) ? 'active' : null}}"><a href="{{route('agent.index')}}" {{-- onclick="getPage('{{route('agent.index')}}')" --}}><i class="fa fa-circle-o {{Request::is('agents') ? 'text-aqua' : null}}"></i> Liste des agents</a></li>
+            <li class="{{(Request::is('agents')) ? 'active' : null}}"><a href="{{route('agent.index')}}" {{-- onclick="getPage('{{route('agent.index')}}')" --}}><i class="fa fa-circle-o {{Request::is('agents') ? 'text-aqua' : null}}"></i>Registre Unique du Personnel</a></li>
           </ul>
         </li>
-        <li class="treeview {{Request::is('conges/*') ? 'active' : null}}">
+        <li class="treeview {{Request::is('conges*') ? 'active' : null}}">
+          <a href="#">
+            <i class="fa fa-warning"></i>
+            <span>Gestion des Congés</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="{{(Request::is('conges')) ? 'active' : null}}"><a href="{{route('conge.index')}}" {{-- onclick="getPage('{{route('conge.index')}}')" --}}><i class="fa fa-circle-o {{Request::is('conges*') ? 'text-aqua' : null}}"></i>Liste des Agents en congés</a></li>
+          </ul>
+        </li>
+        <li class="treeview {{Request::is('absence*') ? 'active' : null}}">
           <a href="#">
             <i class="fa fa-warning"></i>
             <span>Gestion des Absences</span>
@@ -374,8 +398,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="{{(Request::is('conges')) ? 'active' : null}}"><a href="{{route('conge.index')}}" {{-- onclick="getPage('{{route('conge.index')}}')" --}}><i class="fa fa-circle-o {{Request::is('conges') ? 'text-aqua' : null}}"></i>Agents en congés</a></li>
-            <li class="{{(Request::is('conges/ajouter')) ? 'active' : null}}"><a href="{{route('conge.create')}}" {{-- onclick="getPage('{{route('conge.create')}}')" --}}><i class="fa fa-circle-o {{(Request::is('conges/ajouter')) ? 'text-aqua' : null}}"></i>Agents Absents</a></li>
+            <li class="{{(Request::is('absence')) ? 'active' : null}}"><a href="{{route('absence.index')}}" {{-- onclick="getPage('{{route('conge.index')}}')" --}}><i class="fa fa-circle-o {{Request::is('absence*') ? 'text-aqua' : null}}"></i>Liste des Agents absent</a></li>
           </ul>
         </li>
         <li class="treeview {{(Request::is('sites') || Request::is('sites/ajouter')) ? 'active' : null}}">
@@ -394,19 +417,19 @@
         <li class="treeview {{Request::is('planning/*') ? 'active' : null}}">
           <a href="#">
             <i class="fa fa-street-view"></i>
-            <span>Planning Agent</span>
+            <span>Planification Agent</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="{{(Request::is('planning/provisoires/creer')) ? 'active' : null}}"><a href="{{route('planning.create')}}" {{-- onclick="getPage('{{route('planning.create')}}')" --}}><i class="fa fa-circle-o {{Request::is('planning/provisoires/creer') ? 'text-aqua' : null}}"></i>Plannifié un Agent</a></li>
+            <li class="{{(Request::is('planning/provisoires/creer')) ? 'active' : null}}"><a href="{{route('planning.create')}}" {{-- onclick="getPage('{{route('planning.create')}}')" --}}><i class="fa fa-circle-o {{Request::is('planning/provisoires/creer') ? 'text-aqua' : null}}"></i>Planifier un Agent</a></li>
 
-            <li class="{{(Request::is('planning/provisoires')) ? 'active' : null}}"><a href="{{route('planning.index')}}" {{-- onclick="getPage('{{route('planning.index')}}')" --}}><i class="fa fa-circle-o {{Request::is('planning/provisoires') ? 'text-aqua' : null}}"></i>Planning Provisoires</a></li>
+            <li class="{{(Request::is('planning/provisoires')) ? 'active' : null}}"><a href="{{route('planning.index')}}" {{-- onclick="getPage('{{route('planning.index')}}')" --}}><i class="fa fa-circle-o {{Request::is('planning/provisoires') ? 'text-aqua' : null}}"></i>Plannings Provisoires</a></li>
 
-            <li class="{{(Request::is('planning/definitives')) ? 'active' : null}}"><a href="{{route('planning.index_definitives')}}" {{-- onclick="getPage('{{route('planning.index_definitives')}}')" --}}><i class="fa fa-circle-o {{(Request::is('planning/definitives')) ? 'text-aqua' : null}}"></i>Planning Définitives</a></li>
+            <li class="{{(Request::is('planning/definitives')) ? 'active' : null}}"><a href="{{route('planning.index_definitives')}}" {{-- onclick="getPage('{{route('planning.index_definitives')}}')" --}}><i class="fa fa-circle-o {{(Request::is('planning/definitives')) ? 'text-aqua' : null}}"></i>Plannings Définitifs</a></li>
 
-            <li class="{{(Request::is('planning/archives')) ? 'active' : null}}"><a href="{{route('planning.index_archive')}}" {{-- onclick="getPage('{{route('planning.index_archive')}}')" --}}><i class="fa fa-circle-o {{(Request::is('planning/archives')) ? 'text-aqua' : null}}"></i>Archives des Planning</a></li>
+            <li class="{{(Request::is('planning/archives')) ? 'active' : null}}"><a href="{{route('planning.index_archive')}}" {{-- onclick="getPage('{{route('planning.index_archive')}}')" --}}><i class="fa fa-circle-o {{(Request::is('planning/archives')) ? 'text-aqua' : null}}"></i>Plannings Archivés</a></li>
 
           </ul>
         </li>
@@ -668,9 +691,9 @@
 <!-- jQuery UI 1.11.4 -->
 <script src="{{asset('')}}bower_components/jquery-ui/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
+{{-- <script>
   $.widget.bridge('uibutton', $.ui.button);
-</script>
+</script> --}}
 <!-- Bootstrap 3.3.7 -->
 <script src="{{asset('')}}bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- Morris.js charts -->
@@ -728,6 +751,7 @@
           $("div.close").show()
         },
         success: function (data) {
+          // alert(data.new_content)
           $('#'+div_refresh).html(data.new_content)
         },
         error:function(){
@@ -750,12 +774,12 @@
         // },
         // dataType: 'json',
         success: function (data) {
-          // alert(data.content)
+          // alert('Succes')
           $('head').append(data.content.head);
           $('body').append(data.content.script);
           $('#pageContent').html(data.content.content);
           // $('.main-sidebar').load();
-          initCalendar()
+          // initCalendar()
         },
         error:function(xhr){
           alert("Echec")
@@ -779,11 +803,14 @@
           // $('head').append(data.content.head);
           // $('body').append(data.content.script);
           $('#pageContent').html(data.content);
-          // $('.main-sidebar').load();
-          initCalendar()
           //Suppression des erreurs
           $('div.form-group').removeClass('has-error');
           $('label.text-danger').remove();
+            $("select[name='nationalite']").change(function(){
+              var SelectedValue = $("option:selected", this).val();
+              displayElement(SelectedValue)
+            })
+          $('.select2').select2()
         },
         error:function(xhr){
           // alert(Object.getOwnPropertyNames(xhr.responseJSON.errors))
@@ -797,6 +824,7 @@
           })
         }
     });
+    $('.select2').select2()
   }
 
 </script>
@@ -815,7 +843,7 @@
           // $('body').append(data.content.script);
           $('#pageContent').html(data.content);
           // $('.main-sidebar').load();
-          initCalendar()
+          $('.select2').select2()
         },
         error:function(xhr){
           alert("Echec")
@@ -884,7 +912,12 @@
     });
   }
 </script>
+<script>
+  $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+  })
+</script>
 @yield('script')
-
 </body>
 </html>

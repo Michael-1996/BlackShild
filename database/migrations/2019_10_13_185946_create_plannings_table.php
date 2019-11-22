@@ -28,10 +28,10 @@ class CreatePlanningsTable extends Migration
 
             $table->foreign('agent_id')->references('id')->on('agents')
                 ->onDelete('restrict')
-                ->onUpdate('restrict');;
+                ->onUpdate('restrict');
             $table->foreign('site_id')->references('id')->on('sites')
                 ->onDelete('restrict')
-                ->onUpdate('restrict');;
+                ->onUpdate('restrict');
         });
     }
 

@@ -15,4 +15,8 @@ class Agent extends Model
     public function conges(){
     	return $this->hasMany('App\Models\Conge');
     }
+
+    public function departement(){
+    	return $this->belongsTo(Departement::class);
+    }
 }

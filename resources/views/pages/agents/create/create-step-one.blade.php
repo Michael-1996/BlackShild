@@ -1,3 +1,6 @@
+            @php
+              use Carbon\Carbon;
+            @endphp
             {{-- {{dd(\Session::all())}} --}}
             @extends('pages.agents.create.layout')
             @section('tab')
@@ -25,7 +28,7 @@
                                 <select class="form-control" name="civilite">
                                   <option value="sana">Choisir le genre</option>
                                   <option value="M" {{old('civilite')=='M' || $agent->civilite=='M' ? 'selected' : null}}>Monsieur</option>
-                                  <option value="Mll" {{old('civilite')=='Mll' || $agent->civilite=='Mll' ? 'selected' : null}}>Madémoiselle</option>
+                                  <option value="Mll" {{old('civilite')=='Mll' || $agent->civilite=='Mll' ? 'selected' : null}}>Mademoiselle</option>
                                   <option value="Mme" {{old('civilite')=='Mme' || $agent->civilite=='Mme' ? 'selected' : null}}>Madame</option>
                                 </select>
                                 @error('civilite')
@@ -45,7 +48,7 @@
                                   <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                   </div>
-                                  <input type="date" name="datenaissance" class="form-control pull-right" id="datepicker" value="{{old('datenaissance') ?: $agent->datenaissance}}">
+                                  <input type="date" name="datenaissance" class="form-control pull-right" id="datepicker" max="{{Carbon::now()->addYear(-18)->toDateString()}}" value="{{old('datenaissance') ?: $agent->datenaissance}}">
                                 </div>
                                 <!-- /.input group -->
                                 @error('datenaissance')
@@ -55,7 +58,7 @@
                             </div>
                             <div class="col-md-6">
                               <div class="form-group statutmatrimonial @error('statutmatrimonial')  has-error @enderror">
-                                <label>Statut Matrimoniale</label>
+                                <label>Statut Matrimonial</label>
                                 <select class="form-control" name="statutmatrimonial">
                                   <option value="">Choisir le statut</option>
                                   <option value="mar" {{old('statutmatrimonial')=='mar' || $agent->statutmatrimonial=='mar' ? 'selected' : null}}>Marié(e)</option>
@@ -68,18 +71,18 @@
                               </div>
                               <div class="form-group prenoms @error('prenoms')  has-error @enderror">
                                 <label>Prénoms</label>
-                                <input name="prenoms" type="text" class="form-control"  placeholder="Entrer le Prénom" value="{{old('prenoms') ?: $agent->prenoms}}">
+                                <input name="prenoms" type="text" class="form-control"  placeholder="Entrer le(s) Prénom(s)" value="{{old('prenoms') ?: $agent->prenoms}}">
                                 @error('prenoms')
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
                               </div>
-                              <div class="form-group @error('matricule')  has-error @enderror">
+{{--                               <div class="form-group @error('matricule')  has-error @enderror">
                                 <label>Matricule</label>
                                 <input name="matricule" type="text" class="form-control"  placeholder="Entrer le Matricule" value="{{old('matricule') ?: $agent->matricule}}">
                                 @error('matricule')
                                     <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label>
                                 @enderror
-                              </div>
+                              </div> --}}
                             </div>
                           </div>
                         </div>
@@ -87,12 +90,12 @@
 
                       <div style="overflow:auto;margin-right: 26px">
                         <div style="float:right;">
-                          <button type="button" class="btn btn-flat btn-primary" id="nextBtn" onclick="submitForm('regForm')">Suivant</button>
+                          <button type="button" class="btn btn-flat btn-primary" id="nextBtn" onclick="submitForm('regForm')">Etape Suivante</button>
                         </div>
                       </div>
 
                       <div style="text-align:center;margin-top:40px;">
-                        <span class="step"></span>
+                        <span class="step active"></span>
                         <span class="step"></span>
                         <span class="step"></span>
                         <span class="step"></span>

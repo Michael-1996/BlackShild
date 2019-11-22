@@ -1,4 +1,6 @@
-                           
+              @php
+                use Carbon\Carbon;
+              @endphp
               <div class="close">
                 <div class="cs-loader">
                   <div class="cs-loader-inner">
@@ -16,20 +18,28 @@
                 <tr>
                   <th>#</th>
                   <th>Etablissement</th>
-                  <th>Email</th>
                   <th>Ville</th>
                   <th>Contact</th>
+                  <th>Date d'ajout</th>
                   <th>Action</th>
                 </tr>
                 @if(count($sites)>0)
                   @foreach($sites as $site)
                     <tr>
                       <td>{{$site->id}}</td>
-                      <td>{{$site->nom.' '.$site->prenoms}}</td>
-                      <td>{{$site->email}}</td>
-                      <td>{{$site->ville}}</td>
+                      <td style="width: 350px;">{{$site->nom.' '.$site->prenoms}}</td>
+                      <td style="width: 150px;">{{$site->ville}}</td>
                       <td>{{$site->telephone}}</td>                
+                      <td>{{Carbon::parse($site->created_at)->format('d/m/Y')}}</td>
                       <td>
+                        <a href="{{route('site.edit',$site->id)}}" class="label label-primary"  data-toggle="tooltip" data-placement="bottom" title="Afficher"><i class="fa fa-eye"></i></a>
+                        <a href="{{route('site.edit',$site->id)}}" class="label label-primary"><i class="fa fa-pencil" data-toggle="tooltip" data-placement="bottom" title="Modifier"></i></a>
+                        <a href="{{route('site.edit',$site->id)}}" class="label label-primary"><i class="fa fa fa-street-view" data-toggle="tooltip" data-placement="bottom" title="Planning"></i></a>
+                        <span data-toggle="modal" data-link="{{route('site.destroy',$site->id)}}"   data-target="#modal-delete-element" data-div_refresh="div_site_table" >
+                          <a href="#" class="label label-danger"  data-div_refresh="div_site_table" data-toggle="tooltip" data-placement="bottom" title="Supprimer"><i class="fa fa fa-trash"></i></a>
+                        </span>
+                      </td> 
+                      {{-- <td>
                         <div class="input-group input-group-sm">
                           <div class="btn-group">
                             <button type="button" class="btn btn-sm btn-warning">Action</button>
@@ -46,7 +56,7 @@
                             </ul>
                           </div>
                         </div>
-                      </td>                
+                      </td>  --}}               
                     </tr>
                   @endforeach
                 @else

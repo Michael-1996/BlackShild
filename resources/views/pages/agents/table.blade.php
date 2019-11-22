@@ -29,7 +29,7 @@
                       <td>{{$agent->id}}</td>
                       <td>{{$agent->nom.' '.$agent->prenoms}}</td>
                       <td>{{$agent->email}}</td>
-                      <td>{{$agent->departement}}</td>
+                      {{-- <td>{{$agent->departement->nom}}</td> --}}
                       <td>
                         @if($agent->statut==='deploye')
                           <span class="label label-success">planifié</span>
@@ -60,7 +60,7 @@
                   @endforeach
                 @else
                   <tr>
-                    <td colspan="7"><p class="text-center">Aucun agents enrégistrer pour le moment</p></td>
+                    <td colspan="7"><p class="text-center">Aucun agents enrégistré pour le moment</p></td>
                   </tr>
                 @endif
               </table>
